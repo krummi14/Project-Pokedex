@@ -1,0 +1,72 @@
+/* style of header */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+    height: 140px;
+    padding: 16px 80px;
+}
+
+.header_maxWidth {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.header_logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.header_logo_text {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(249, 78, 77, 1);
+}
+
+.search_pokemon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* end of header style */
+
+/* style of footer */
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(249, 78, 77, 1);
+    color: white;
+    height: 140px;
+    padding: 16px 80px;
+}
+
+.footer_maxWidth {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.footer_text {
+    font-size: 16px;
+    color: white;
+}
+
+.fsz {
+    font-size: 20px;
+}
+/* end of footer style */
