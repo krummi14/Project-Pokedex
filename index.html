@@ -10,13 +10,14 @@
     <link rel="stylesheet" href="./styles/assets.css">
     <link rel="stylesheet" href="./styles/fonts.css">
     <link rel="stylesheet" href="./styles/standard.css">
+    <link rel="stylesheet" href="./styles/loader.css">
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./assets/icon/pokeball_blackWhite.png">
 
     <script src="./scripts/template.js"></script>
 </head>
 
-<body>
+<body onload="init()">
     <header>
         <div class="header_maxWidth">
             <figure class="header_logo">
@@ -24,14 +25,32 @@
                 <figcaption class="header_logo_text">Pokédex</figcaption>
             </figure>
             <div class="search_pokemon">
-                <input class="search_input" type="search" placeholder="Search for a Pokemon">
-                <button class="search_button">Search</button>
+                <input class="search_input" type="search" placeholder="Search for a Pokémon">
+                <button class="button search_button">Search</button>
             </div>
         </div>
     </header>
 
     <main>
+        <div class="main_maxWidth">
+            <section id="loading_screen" class="loading_screen loading_screen_none">
+                <div class="pokeball_loader">
+                    <div class="pokeball_loader_bg"></div>
+                </div>
+                <p class="loading_text">Loading ...</p>
+            </section>
 
+            <section id="pokemon_list" class="pokemon_list pokemon_list_none">
+                    <div class="pokemon_card">
+                            <div class="pokemon_img">Pokemon Image</div>
+                            <div class="pokemon_id_name"><p>ID</p><p>Name</p></div>
+                            <div class="pokemon_element">Element</div>        
+                    </div>
+                    <div class="load_more_pokemons">
+                        <button onclick="loadMorePokemons()" class="button load_more_button">Load more Pokémons</button>
+                    </div>
+            </section>
+        </div>
     </main>
 
     <footer>
