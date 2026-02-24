@@ -14,7 +14,6 @@ function init() {
     showLoadingScreenFirstTime();
     showPokemonsList();
     initPokemonsList();
-    
 }
 
 async function initPokemonsList() {
@@ -24,11 +23,17 @@ async function initPokemonsList() {
 }
 
 async function getPokemonData(id = "") {
-    let pokemonResponse = await fetch(BASE_URL + id);
-    let pokemonResponseAsJson = await pokemonResponse.json();
-    let speciesResponse = await fetch(SPECIES_URL + id);
-    let pokemonSpeciesResponseAsJson = await speciesResponse.json();
-    return createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson);
+    if (pokemonsMainList[id - 1]) {
+        return pokemonsMainList[id - 1];
+    } else {
+        let pokemonResponse = await fetch(BASE_URL + id);
+        let pokemonResponseAsJson = await pokemonResponse.json();
+        let speciesResponse = await fetch(SPECIES_URL + id);
+        let pokemonSpeciesResponseAsJson = await speciesResponse.json();
+        let pokemonObj = createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson);
+        pokemonsMainList[id - 1] = pokemonObj;
+        return pokemonObj;
+    }
 }
 
 function createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson) {
@@ -45,10 +50,8 @@ function createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJ
 
 async function renderPokemonsMainList(start, end) {
     for (let index = start; index < end; index++) {
-        let pokemonObj = await getPokemonData(index);
-        pokemonsMainList.push(pokemonObj);
+        await getPokemonData(index);
     }
-    return pokemonsMainList;
 }
 
 function renderPokemonCard() {
