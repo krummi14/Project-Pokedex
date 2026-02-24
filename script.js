@@ -4,11 +4,13 @@ let pokemonsMainList = [];
 let currentPokemonsMainList = [];
 let contentLoadingScreen = document.getElementById('loading_screen');
 let contentPokemonList = document.getElementById('pokemon_list');
-let contentPokemonCard = document.getElementById('pokemon_card_list');
+let contentPokemonCardList = document.getElementById('pokemon_card_list');
 let contentSearchInput = document.getElementById('search_input_value');
 let contentLoadLessButton = document.getElementById('load_less_button');
 let contentLoadMoreButton = document.getElementById('load_more_button');
-let scrollPosition = 0;
+let contentPokeomonCardDialog = document.getElementById('pokemon_card');
+let contentPokemonCard = document.getElementById('pokemon_card_content');
+let currentPokemonCard = 0;
 
 function init() {
     showLoadingScreenFirstTime();
@@ -55,9 +57,9 @@ async function renderPokemonsMainList(start, end) {
 }
 
 function renderPokemonCard() {
-    contentPokemonCard.innerHTML = "";
+    contentPokemonCardList.innerHTML = "";
     for (let pokemonCardIndex = 0; pokemonCardIndex < currentPokemonsMainList.length; pokemonCardIndex++) {
-        contentPokemonCard.innerHTML += getPokemonCardTemplate(pokemonCardIndex);
+        contentPokemonCardList.innerHTML += getMainPokemonCardTemplate(pokemonCardIndex);
         checkTextColor(pokemonCardIndex);
         checkAmountOfTypes(pokemonCardIndex);
     }
@@ -161,4 +163,37 @@ function loadLessPokemons() {
 function toggleButtonsClass() {
     contentLoadLessButton.classList.toggle('load_button_none');
     contentLoadMoreButton.classList.toggle('load_button_none');
+}
+
+function openCurrentPokemonCard(pokemonCardIndex) {
+    currentPokemonCard = pokemonCardIndex;
+    openPokemonCard(null, pokemonCardIndex);
+}
+
+function openPokemonCard(event, pokemonCardIndex) {
+    if (event) event.stopPropagation();
+    createPokemonCard(pokemonCardIndex);
+}
+
+function createPokemonCard(pokemonCardIndex) {
+    contentPokemonCard.innerHTML = getPokemonCardTemplate(pokemonCardIndex);
+    contentPokeomonCardDialog.showModal();
+    contentPokeomonCardDialog.classList.add("dialog_opend");
+    document.body.classList.toggle('scroll_lock');
+}
+
+function closePokemonCard() {
+    recreatePokemonCard();
+    setTimeout(() => {
+        contentPokeomonCardDialog.close();
+    }, 125);
+}
+
+function recreatePokemonCard() {
+    contentPokeomonCardDialog.classList.remove("dialog_opend");
+    document.body.classList.toggle('scroll_lock');
+}
+
+function closePokemonCardOnBodyclick(event) {
+    event.stopPropagation()
 }

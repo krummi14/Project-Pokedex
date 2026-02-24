@@ -1,0 +1,24 @@
+.pokemon_card {
+    border-radius: 40px;
+    border: none;
+    top: 50%;
+    left: 50%;
+    padding: 0;
+    transform: translate(-50%, -50%) translateX(100px);
+    transition: all 125ms ease-in;
+}
+
+.pokemon_card::backdrop {
+    background-color: rgba(158, 156, 156, 1);
+    transition: all 125ms ease-in;
+    opacity: 0;
+}
+
+.pokemon_card.dialog_opend {
+    transform: translate(-50%, -50%) translateX(0);
+    transition: all 125ms ease-in;
+}
+
+.pokemon_card.dialog_opend::backdrop {
+    opacity: 0.8;
+}

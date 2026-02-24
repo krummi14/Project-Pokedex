@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./styles/fonts.css">
     <link rel="stylesheet" href="./styles/standard.css">
     <link rel="stylesheet" href="./styles/loader.css">
+    <link rel="stylesheet" href="./styles/dialog.css">
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./assets/icon/pokeball_blackWhite.png">
 
@@ -25,8 +26,9 @@
                 <figcaption class="header_logo_text">Pokédex</figcaption>
             </figure>
             <div class="search_pokemon">
-                <input id="search_input_value" oninput="filterAndShowPokemonCards()" class="search_input" type="search" placeholder="Search for a Pokémon">
-                <button class="button search_button">Search</button>
+                <input id="search_input_value" oninput="filterAndShowPokemonCards()" class="search_input" type="search"
+                    placeholder="Search for a Pokémon">
+                <button onclick="filterAndShowPokemonCards()" class="button search_button">Search</button>
             </div>
         </div>
     </header>
@@ -41,11 +43,19 @@
             </section>
 
             <section id="pokemon_list" class="pokemon_list pokemon_list_none">
-                    <div id="pokemon_card_list" class="pokemon_card_list"></div>
-                    <div class="load_more_pokemons">
-                        <button onclick="loadLessPokemons()" id="load_less_button" class="button load_more_button load_button_none">Load less Pokémons</button>
-                        <button onclick="loadMorePokemons()" id="load_more_button" class="button load_more_button">Load more Pokémons</button>
-                    </div>
+                <div id="pokemon_card_list" class="pokemon_card_list"></div>
+                <div class="load_more_pokemons">
+                    <button onclick="loadLessPokemons()" id="load_less_button"
+                        class="button load_more_button load_button_none">Load less Pokémons</button>
+                    <button onclick="loadMorePokemons()" id="load_more_button" class="button load_more_button">Load more
+                        Pokémons</button>
+                </div>
+            </section>
+
+            <section>
+                <dialog onclick="closePokemonCard()" id="pokemon_card" class="pokemon_card">
+                    <div onclick="closePokemonCardOnBodyclick(event)" id="pokemon_card_content" class="pokemon_card_content"></div>
+                </dialog>
             </section>
         </div>
     </main>
