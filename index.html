@@ -25,7 +25,7 @@
                 <figcaption class="header_logo_text">Pokédex</figcaption>
             </figure>
             <div class="search_pokemon">
-                <input class="search_input" type="search" placeholder="Search for a Pokémon">
+                <input id="search_input_value" oninput="filterAndShowPokemonCards()" class="search_input" type="search" placeholder="Search for a Pokémon">
                 <button class="button search_button">Search</button>
             </div>
         </div>
@@ -43,7 +43,8 @@
             <section id="pokemon_list" class="pokemon_list pokemon_list_none">
                     <div id="pokemon_card_list" class="pokemon_card_list"></div>
                     <div class="load_more_pokemons">
-                        <button onclick="loadMorePokemons()" class="button load_more_button">Load more Pokémons</button>
+                        <button onclick="loadLessPokemons()" id="load_less_button" class="button load_more_button load_button_none">Load less Pokémons</button>
+                        <button onclick="loadMorePokemons()" id="load_more_button" class="button load_more_button">Load more Pokémons</button>
                     </div>
             </section>
         </div>

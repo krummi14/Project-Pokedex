@@ -1,6 +1,6 @@
 .pokeball_img {
-    height: 104px;
-    width: 104px;
+    height: 120px;
+    width: 120px;
 }
 
 .search_input {
@@ -51,4 +51,8 @@
     font-size: 16px;
     width: 200px;
     height: 40px;
+}
+
+.load_button_none {
+    display: none;
 }
