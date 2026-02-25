@@ -84,6 +84,34 @@ function styleGrey(pokeId, pokeName, pokeType) {
     });
 }
 
+function checkTextColorOfPokeCardDialog(pokemonCardIndex) {
+    let contentPokemonCardIdAtDialog = document.getElementById(`pokemon_card_id_${pokemonCardIndex}`);
+    let contentPokemonCardNameAtDialog = document.getElementById(`pokemon_card_name_${pokemonCardIndex}`);
+    let contentPokemonCardNextButton = document.getElementById(`next_pokemon_${pokemonCardIndex}`);
+    let contentPokemonCardPreviousButton = document.getElementById(`previous_pokemon_${pokemonCardIndex}`);
+    if (whiteAndYellowBgAtPokeCardDialog(pokemonCardIndex)) {
+        styleGreyAtPokeCardDialog(contentPokemonCardIdAtDialog, contentPokemonCardNameAtDialog);
+        styleBgGreyAtPokeCardDialog(contentPokemonCardNextButton, contentPokemonCardPreviousButton);
+    }
+}
+
+function whiteAndYellowBgAtPokeCardDialog(pokemonCardIndex) {
+    return currentPokemonsMainList[pokemonCardIndex].color == 'white' || currentPokemonsMainList[pokemonCardIndex].color == 'yellow';
+}
+
+function styleGreyAtPokeCardDialog(pokeId, pokeName) {
+    [pokeId, pokeName].forEach(element => {
+        element.style = 'color: rgba(158, 156, 156, 1)';
+    });
+}
+
+function styleBgGreyAtPokeCardDialog(nextButton, previousButton) {
+    [nextButton, previousButton].forEach(element => {
+        element.style.backgroundColor = 'rgba(158, 156, 156, 1)';
+        element.style.color = 'white';
+    });
+}
+
 function checkAmountOfTypes(pokemonCardIndex) {
     let contentSecondPokemonType = document.getElementById(`second_pokemon_type_${pokemonCardIndex}`);
     let contentPokemonCardTypes = document.getElementById(`pokemon_types_${pokemonCardIndex}`);
@@ -99,6 +127,23 @@ function typeTextIsUndefined(contentSecondPokemonType) {
 function stylePokeCard(contentSecondPokemonType, contentPokemonCardTypes) {
     contentSecondPokemonType.classList.add("pokemon_type_none");
     contentPokemonCardTypes.style = 'justify-content: center';
+}
+
+function checkAmountOfTypesAtPokemonCardDialog(pokemonCardIndex) {
+    let contentSecondPokemonTypeAtPokemonCard = document.getElementById(`second_pokemon_card_type_${pokemonCardIndex}`);
+    let contentPokemonCardTypesAtPokemonDialog = document.getElementById(`pokemon_card_types_${pokemonCardIndex}`);
+    if (typeTextIsUndefinedAtPokemonCardDialog(contentSecondPokemonTypeAtPokemonCard)) {
+        stylePokeCardAtPokeDialog(contentSecondPokemonTypeAtPokemonCard, contentPokemonCardTypesAtPokemonDialog);
+    }
+}
+
+function typeTextIsUndefinedAtPokemonCardDialog(contentSecondPokemonTypeAtPokemonCard) {
+    return contentSecondPokemonTypeAtPokemonCard.innerText == "undefined";
+}
+
+function stylePokeCardAtPokeDialog(contentSecondPokemonTypeAtPokemonCard, contentPokemonCardTypesAtPokemonDialog) {
+    contentSecondPokemonTypeAtPokemonCard.classList.add("pokemon_type_none");
+    contentPokemonCardTypesAtPokemonDialog.style = 'justify-content: center';
 }
 
 function showLoadingScreenFirstTime() {
@@ -179,7 +224,9 @@ function createPokemonCard(pokemonCardIndex) {
     contentPokemonCard.innerHTML = getPokemonCardTemplate(pokemonCardIndex);
     contentPokeomonCardDialog.showModal();
     contentPokeomonCardDialog.classList.add("dialog_opend");
-    document.body.classList.toggle('scroll_lock');
+    document.body.classList.add('scroll_lock');
+    checkAmountOfTypesAtPokemonCardDialog(pokemonCardIndex);
+    checkTextColorOfPokeCardDialog(pokemonCardIndex);
 }
 
 function closePokemonCard() {
@@ -191,9 +238,19 @@ function closePokemonCard() {
 
 function recreatePokemonCard() {
     contentPokeomonCardDialog.classList.remove("dialog_opend");
-    document.body.classList.toggle('scroll_lock');
+    document.body.classList.remove('scroll_lock');
 }
 
 function closePokemonCardOnBodyclick(event) {
     event.stopPropagation()
+}
+
+function nextOrPreviousPokemonCard(pokemonCardIndex, buttonCondition) {
+    if (buttonCondition == "next") {
+        currentPokemonCard++;
+    } else if (buttonCondition == "previous") {
+        currentPokemonCard--;
+    }
+    pokemonCardIndex = currentPokemonCard;
+    createPokemonCard(pokemonCardIndex);
 }

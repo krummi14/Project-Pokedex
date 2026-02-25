@@ -26,7 +26,7 @@
 
 .search_input::placeholder {
     color: rgba(249, 78, 77, 1);
-    opacity: 0.2;   
+    opacity: 0.2;
 }
 
 .button {
@@ -55,4 +55,28 @@
 
 .load_button_none {
     display: none;
+}
+
+.pokemon_img_size {
+    width: 160px;
+    height: 160px;
+}
+
+.pokemon_img_size_card {
+    width: 80px;
+    height: 80px;
+}
+
+.pokemon_card_nexTo_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    width: 80px;
+    height: 40px;
+}
+
+.pokemon_card_nexTo_button:hover {
+    color: rgba(158, 156, 156, 1);
+    font-weight: bold;
 }

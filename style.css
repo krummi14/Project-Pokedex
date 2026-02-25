@@ -205,11 +205,6 @@ footer {
     padding: 16px 0;
 }
 
-.pokemon_img_size {
-    width: 160px;
-    height: 160px;
-}
-
 .pokemon_name {
     font-size: 32px;
     color: white;
@@ -245,14 +240,71 @@ footer {
 /* end of pokemon list style */
 
 /* style of pokemon_card_dialog*/
+/* style of pokemon_card_dialog_header*/
 .pokemon_card_content {
     border: none;
     border-radius: 40px;
 }
 
 .pokemon_card_header {
- 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    height: 240px;
+    background-image: url(./assets/icon/pokeball_card.png);
+    background-size: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
 }
+
+.pokemon_card_designation {
+    width: 100%;
+}
+
+.pokemon_id_card {
+    font-size: 16px;
+    color: white;
+    text-align: end;
+    width: 100%;
+}
+
+.pokemon_name_card {
+    font-size: 32px;
+    color: white;
+    text-align: start;
+    width: 100%;
+}
+
+.pokemon_types_gap {
+    gap: 100px;
+}
+
+.pokemon_types_row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.pokemon_type_color {
+    color: rgba(158, 156, 156, 1);
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(158, 156, 156, 1);
+}
+/* end of pokemon_card_dialog style_header*/
+
+/* style of pokemon_card_dialog_footer*/
+.pokemon_card_footer {
+    height: 40px;
+    background-color: white;
+    padding: 40px;
+}
+
+/* end of pokemon_card_dialog style_footer*/
 
 /* end of pokemon_card_dialog style*/
 /* end of main stlye */
