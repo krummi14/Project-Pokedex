@@ -2,6 +2,7 @@ let BASE_URL = 'https://pokeapi.co/api/v2/pokemon/';
 let SPECIES_URL = 'https://pokeapi.co/api/v2/pokemon-species/'
 let pokemonsMainList = [];
 let currentPokemonsMainList = [];
+let pokemonsBaseStatesList = [];
 let contentLoadingScreen = document.getElementById('loading_screen');
 let contentPokemonList = document.getElementById('pokemon_list');
 let contentPokemonCardList = document.getElementById('pokemon_card_list');
@@ -10,6 +11,7 @@ let contentLoadLessButton = document.getElementById('load_less_button');
 let contentLoadMoreButton = document.getElementById('load_more_button');
 let contentPokeomonCardDialog = document.getElementById('pokemon_card');
 let contentPokemonCard = document.getElementById('pokemon_card_content');
+let contentNavigationAbout = document.getElementById('navigation_about');
 let currentPokemonCard = 0;
 
 function init() {
@@ -25,17 +27,23 @@ async function initPokemonsList() {
 }
 
 async function getPokemonData(id = "") {
-    if (pokemonsMainList[id - 1]) {
-        return pokemonsMainList[id - 1];
+    if (pokemonsMainList[id - 1] && pokemonsBaseStatesList[id - 1]) {
+        return pokemonsMainList[id - 1], pokemonsBaseStatesList[id - 1];
     } else {
-        let pokemonResponse = await fetch(BASE_URL + id);
-        let pokemonResponseAsJson = await pokemonResponse.json();
-        let speciesResponse = await fetch(SPECIES_URL + id);
-        let pokemonSpeciesResponseAsJson = await speciesResponse.json();
-        let pokemonObj = createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson);
-        pokemonsMainList[id - 1] = pokemonObj;
-        return pokemonObj;
+        await fetchPokemonData(id);
     }
+}
+
+async function fetchPokemonData(id = "") {
+    let pokemonResponse = await fetch(BASE_URL + id);
+    let pokemonResponseAsJson = await pokemonResponse.json();
+    let speciesResponse = await fetch(SPECIES_URL + id);
+    let pokemonSpeciesResponseAsJson = await speciesResponse.json();
+    let pokemonObj = createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson);
+    let pokemonObjBaseStates = createPokemonsBaseStatesList(pokemonResponseAsJson);
+    pokemonsMainList[id - 1] = pokemonObj;
+    pokemonsBaseStatesList[id - 1] = pokemonObjBaseStates;
+    return pokemonObj, pokemonObjBaseStates;
 }
 
 function createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson) {
@@ -46,7 +54,21 @@ function createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJ
         types: pokemonResponseAsJson.types.map(typeElement => {
             return typeElement.type.name
         }),
+        height: pokemonResponseAsJson.height,
+        weight: pokemonResponseAsJson.weight,
+        base_experience: pokemonResponseAsJson.base_experience,
+        abilities: pokemonResponseAsJson.abilities.map(abilityElement => {
+            return abilityElement.ability.name
+        }),
         color: pokemonSpeciesResponseAsJson.color.name
+    };
+}
+
+function createPokemonsBaseStatesList(pokemonResponseAsJson) {
+    return {
+        id: pokemonResponseAsJson.id,
+        name: pokemonResponseAsJson.name,
+        base_stats: pokemonResponseAsJson.stats
     };
 }
 
@@ -253,4 +275,57 @@ function nextOrPreviousPokemonCard(pokemonCardIndex, buttonCondition) {
     }
     pokemonCardIndex = currentPokemonCard;
     createPokemonCard(pokemonCardIndex);
+}
+
+function openPokemonInformation(pokemonCardIndex, navigationCondition) {
+    let contentPokemonInformationAbout = document.getElementById(`about_${pokemonCardIndex}`);
+    let contentPokemonInformationBaseState = document.getElementById(`base_states_${pokemonCardIndex}`);
+    let contentPokemonInformationGender = document.getElementById(`gender_${pokemonCardIndex}`);
+    let contentPokemonInformationEvolution = document.getElementById(`evolution_${pokemonCardIndex}`);
+    switchToPokemonCardInformation(navigationCondition, contentPokemonInformationAbout, contentPokemonInformationBaseState, contentPokemonInformationGender, contentPokemonInformationEvolution);
+    changeClassPokemonNavigation(pokemonCardIndex, navigationCondition);
+}
+
+function switchToPokemonCardInformation(navigationCondition, about, baseStates, gender, evolution) {
+    switch (navigationCondition) {
+        case "about":
+            changeClassOfPokemonCard(about, baseStates, gender, evolution);
+            break;
+        case "base_states":
+            changeClassOfPokemonCard(baseStates, about, gender, evolution);
+            break;
+        case "gender":
+            changeClassOfPokemonCard(gender, baseStates, about, evolution);
+            break;
+        case "evolution":
+            changeClassOfPokemonCard(evolution, gender, baseStates, about);
+            break;
+    }
+}
+
+function changeClassOfPokemonCard(removeClassDsiplayNone, addClassDsiplayNoneOne, addClassDsiplayNoneTwo, addClassDsiplayNoneThree) {
+    removeClassDsiplayNone.classList.remove("pokemon_information_none");
+    addClassDsiplayNoneOne.classList.add("pokemon_information_none");
+    addClassDsiplayNoneTwo.classList.add("pokemon_information_none");
+    addClassDsiplayNoneThree.classList.add("pokemon_information_none");
+}
+
+function changeClassPokemonNavigation(pokemonCardIndex, navigationCondition,) {
+    let contentNavigationAbout = document.getElementById(`navigation_about_${pokemonCardIndex}`);
+    let contentNavigationBaseStates = document.getElementById(`navigation_base_states_${pokemonCardIndex}`);
+    let contentNavigationGender = document.getElementById(`navigation_gender_${pokemonCardIndex}`);
+    let contentNavigationEvolution = document.getElementById(`navigation_evolution_${pokemonCardIndex}`);
+    removeClassPokemonNavigation(contentNavigationAbout, contentNavigationBaseStates, contentNavigationGender, contentNavigationEvolution);
+    addClassOnePokemonNavigation(navigationCondition, pokemonCardIndex);
+}
+
+function removeClassPokemonNavigation(about, baseStates, gender, evolution) {
+    [about, baseStates, gender, evolution].forEach(link => {
+        link.classList.remove("pokemon_card_navigation_link_active");
+    });
+}
+
+function addClassOnePokemonNavigation(navigationCondition, pokemonCardIndex) {
+    let contentNavigationActive = document.getElementById(`navigation_${navigationCondition}_${pokemonCardIndex}`);
+    contentNavigationActive.classList.add("pokemon_card_navigation_link_active");
 }

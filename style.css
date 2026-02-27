@@ -295,16 +295,66 @@ footer {
     background-color: rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(158, 156, 156, 1);
 }
+
 /* end of pokemon_card_dialog style_header*/
+
+/* style of pokemon_card_dialog_information*/
+.pokemon_card_information {
+    padding: 24px;
+}
+
+.pokemon_card_navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.pokemon_card_navigation_link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(158, 156, 156, 1);
+    padding: 24px 0;
+}
+
+.pokemon_card_navigation_link:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(158, 156, 156, 1);
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 2);
+    height: 40px;
+    width: 120px;
+    border-radius: 40%;
+}
+
+.pokemon_card_navigation_link_active {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(158, 156, 156, 1);
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 2);
+    height: 40px;
+    width: 120px;
+    border-radius: 40%;
+}
+
+.pokemon_informations {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pokemon_information_none {
+    display: none;
+}
+
+/* end of pokemon_card_dialog_information*/
 
 /* style of pokemon_card_dialog_footer*/
 .pokemon_card_footer {
     height: 40px;
     background-color: white;
-    padding: 40px;
+    padding: 64px 40px;
 }
 
 /* end of pokemon_card_dialog style_footer*/
-
 /* end of pokemon_card_dialog style*/
 /* end of main stlye */

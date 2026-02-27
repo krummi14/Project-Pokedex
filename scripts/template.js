@@ -31,7 +31,69 @@ function getPokemonCardTemplate(pokemonCardIndex) {
                     </div>
                 </div> 
             </header>
-            <div><p>Navigation About, Base States, Gender, Evolution</p></div>
+            <div class="pokemon_card_information">
+                <nav class="pokemon_card_navigation">
+                    <a id="navigation_about_${pokemonCardIndex}" onclick="openPokemonInformation(${pokemonCardIndex}, 'about')" class="pokemon_card_navigation_link pokemon_card_navigation_link_active" href="#about_${pokemonCardIndex}">About</a>
+                    <a id="navigation_base_states_${pokemonCardIndex}" onclick="openPokemonInformation(${pokemonCardIndex}, 'base_states')" class="pokemon_card_navigation_link" href="#base_states_${pokemonCardIndex}">Base Stats</a>
+                    <a id="navigation_gender_${pokemonCardIndex}" onclick="openPokemonInformation(${pokemonCardIndex}, 'gender')" class="pokemon_card_navigation_link" href="#gender">Gender</a>
+                    <a id="navigation_evolution_${pokemonCardIndex}" onclick="openPokemonInformation(${pokemonCardIndex}, 'evolution')" class="pokemon_card_navigation_link" href="#evolution">Evolution</a>
+                </nav> 
+                <span class="pokemon_informations">
+                    <span id="about_${pokemonCardIndex}">
+                        <table>
+                            <tr>
+                                <td>Height:</td>
+                                <td>${(currentPokemonsMainList[pokemonCardIndex].height / 10)} m</td>
+                            </tr>
+                            <tr>
+                                <td>Weight:</td>
+                                <td>${(currentPokemonsMainList[pokemonCardIndex].weight / 10)} kg</td>
+                            </tr>
+                            <tr>
+                                <td>Base Experience:</td>
+                                <td>${currentPokemonsMainList[pokemonCardIndex].base_experience}</td>
+                            </tr>
+                            <tr>
+                                <td>Abilities:</td>
+                                <td>${currentPokemonsMainList[pokemonCardIndex].abilities[0]}, ${currentPokemonsMainList[pokemonCardIndex].abilities[1]}</td>
+                            </tr>
+                        </table>
+                    </span>
+                    <span id="base_states_${pokemonCardIndex}" class="pokemon_information_none">
+                        <table>
+                            <tr>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[0].stat.name}:</td>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[0].base_stat}</td>
+                            </tr>
+                            <tr>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[1].stat.name}:</td>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[1].base_stat}</td>
+                            </tr>
+                            <tr>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[2].stat.name}:</td>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[2].base_stat}</td>
+                            </tr>
+                            <tr>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[3].stat.name}:</td>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[3].base_stat}</td>
+                            </tr>
+                            <tr>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[4].stat.name}:</td>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[4].base_stat}</td>
+                            </tr>
+                            <tr>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[5].stat.name}:</td>
+                                <td>${pokemonsBaseStatesList[pokemonCardIndex].base_stats[5].base_stat}</td>
+                            </tr>
+                        </table>
+                    </span>
+                    <span id="gender_${pokemonCardIndex}" class="pokemon_information_none">
+                        <p>gender</p>
+                    </span>
+                    <span id="evolution_${pokemonCardIndex}" class="pokemon_information_none">
+                        <p>evolution</p>
+                    </span>
+                </span>
             <footer class="pokemon_card_footer">
                 <button onclick="nextOrPreviousPokemonCard(${pokemonCardIndex}, 'previous')" id="previous_pokemon_${pokemonCardIndex}" class="button pokemon_card_nexTo_button" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">&#8592</button>
                 <button onclick="nextOrPreviousPokemonCard(${pokemonCardIndex}, 'next')" id="next_pokemon_${pokemonCardIndex}" class="button pokemon_card_nexTo_button" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">&#8594</button>
