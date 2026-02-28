@@ -1,8 +1,10 @@
 let BASE_URL = 'https://pokeapi.co/api/v2/pokemon/';
-let SPECIES_URL = 'https://pokeapi.co/api/v2/pokemon-species/'
+let SPECIES_URL = 'https://pokeapi.co/api/v2/pokemon-species/';
+let EVO_URL = 'https://pokeapi.co/api/v2/evolution-chain/';
 let pokemonsMainList = [];
 let currentPokemonsMainList = [];
 let pokemonsBaseStatesList = [];
+let pokemonsEvoList = [];
 let contentLoadingScreen = document.getElementById('loading_screen');
 let contentPokemonList = document.getElementById('pokemon_list');
 let contentPokemonCardList = document.getElementById('pokemon_card_list');
@@ -27,8 +29,8 @@ async function initPokemonsList() {
 }
 
 async function getPokemonData(id = "") {
-    if (pokemonsMainList[id - 1] && pokemonsBaseStatesList[id - 1]) {
-        return pokemonsMainList[id - 1], pokemonsBaseStatesList[id - 1];
+    if (pokemonsMainList[id - 1] && pokemonsBaseStatesList[id - 1] && pokemonsEvoList[0]) {
+        return pokemonsMainList[id - 1], pokemonsBaseStatesList[id - 1], pokemonsEvoList[0];
     } else {
         await fetchPokemonData(id);
     }
@@ -39,11 +41,15 @@ async function fetchPokemonData(id = "") {
     let pokemonResponseAsJson = await pokemonResponse.json();
     let speciesResponse = await fetch(SPECIES_URL + id);
     let pokemonSpeciesResponseAsJson = await speciesResponse.json();
+    let evoResponse = await fetch(EVO_URL + id);
+    let pokemonEvolutionResponseAsJson = await evoResponse.json();
     let pokemonObj = createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson);
     let pokemonObjBaseStates = createPokemonsBaseStatesList(pokemonResponseAsJson);
+    let pokemonObjEvolution = createPokemonsEvoList(pokemonEvolutionResponseAsJson);
     pokemonsMainList[id - 1] = pokemonObj;
     pokemonsBaseStatesList[id - 1] = pokemonObjBaseStates;
-    return pokemonObj, pokemonObjBaseStates;
+    pokemonsEvoList[id - 1] = pokemonObjEvolution;
+    return pokemonObj, pokemonObjBaseStates, pokemonObjEvolution;
 }
 
 function createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson) {
@@ -72,6 +78,20 @@ function createPokemonsBaseStatesList(pokemonResponseAsJson) {
     };
 }
 
+function createPokemonsEvoList(pokemonEvolutionResponseAsJson) {
+    let second = undefined;
+    if (pokemonEvolutionResponseAsJson.chain.evolves_to[0].evolves_to.length > 0) {
+        second = pokemonEvolutionResponseAsJson.chain.evolves_to[0].evolves_to[0].species.name;
+    } else {
+        second;
+    }
+    return {
+        evolution_start: pokemonEvolutionResponseAsJson.chain.species.name,
+        evolution_to: pokemonEvolutionResponseAsJson.chain.evolves_to[0].species.name,
+        evolution_end: second
+    }
+}
+
 async function renderPokemonsMainList(start, end) {
     for (let index = start; index < end; index++) {
         await getPokemonData(index);
@@ -84,6 +104,22 @@ function renderPokemonCard() {
         contentPokemonCardList.innerHTML += getMainPokemonCardTemplate(pokemonCardIndex);
         checkTextColor(pokemonCardIndex);
         checkAmountOfTypes(pokemonCardIndex);
+        addEvolutionStepsToPokemonsMainList(pokemonCardIndex);
+    }
+}
+
+function addEvolutionStepsToPokemonsMainList(pokemonCardIndex) {
+    for (let index = 0; index < pokemonsEvoList.length; index++) {
+        if (pokemonsEvoList[index].evolution_start == currentPokemonsMainList[pokemonCardIndex].name || pokemonsEvoList[index].evolution_to == currentPokemonsMainList[pokemonCardIndex].name || pokemonsEvoList[index].evolution_end == currentPokemonsMainList[pokemonCardIndex].name) {
+            currentPokemonsMainList[pokemonCardIndex].evolution_steps = pokemonsEvoList[index];
+            if (currentPokemonsMainList[pokemonCardIndex].name == pokemonsEvoList[index].evolution_start) {
+                pokemonsEvoList[index].evolution_start_img = currentPokemonsMainList[pokemonCardIndex].img_url;
+            } else if (currentPokemonsMainList[pokemonCardIndex].name == pokemonsEvoList[index].evolution_to) {
+                pokemonsEvoList[index].evolution_to_img = currentPokemonsMainList[pokemonCardIndex].img_url;
+            } else if (currentPokemonsMainList[pokemonCardIndex].name == pokemonsEvoList[index].evolution_end) {
+                pokemonsEvoList[index].evolution_end_img = currentPokemonsMainList[pokemonCardIndex].img_url;
+            }
+        }
     }
 }
 
@@ -111,14 +147,10 @@ function checkTextColorOfPokeCardDialog(pokemonCardIndex) {
     let contentPokemonCardNameAtDialog = document.getElementById(`pokemon_card_name_${pokemonCardIndex}`);
     let contentPokemonCardNextButton = document.getElementById(`next_pokemon_${pokemonCardIndex}`);
     let contentPokemonCardPreviousButton = document.getElementById(`previous_pokemon_${pokemonCardIndex}`);
-    if (whiteAndYellowBgAtPokeCardDialog(pokemonCardIndex)) {
+    if (whiteAndYellowBg(pokemonCardIndex)) {
         styleGreyAtPokeCardDialog(contentPokemonCardIdAtDialog, contentPokemonCardNameAtDialog);
         styleBgGreyAtPokeCardDialog(contentPokemonCardNextButton, contentPokemonCardPreviousButton);
     }
-}
-
-function whiteAndYellowBgAtPokeCardDialog(pokemonCardIndex) {
-    return currentPokemonsMainList[pokemonCardIndex].color == 'white' || currentPokemonsMainList[pokemonCardIndex].color == 'yellow';
 }
 
 function styleGreyAtPokeCardDialog(pokeId, pokeName) {
@@ -280,47 +312,42 @@ function nextOrPreviousPokemonCard(pokemonCardIndex, buttonCondition) {
 function openPokemonInformation(pokemonCardIndex, navigationCondition) {
     let contentPokemonInformationAbout = document.getElementById(`about_${pokemonCardIndex}`);
     let contentPokemonInformationBaseState = document.getElementById(`base_states_${pokemonCardIndex}`);
-    let contentPokemonInformationGender = document.getElementById(`gender_${pokemonCardIndex}`);
     let contentPokemonInformationEvolution = document.getElementById(`evolution_${pokemonCardIndex}`);
-    switchToPokemonCardInformation(navigationCondition, contentPokemonInformationAbout, contentPokemonInformationBaseState, contentPokemonInformationGender, contentPokemonInformationEvolution);
+    switchToPokemonCardInformation(navigationCondition, contentPokemonInformationAbout, contentPokemonInformationBaseState, contentPokemonInformationEvolution);
     changeClassPokemonNavigation(pokemonCardIndex, navigationCondition);
+    addEvolutionImages(pokemonCardIndex);
 }
 
-function switchToPokemonCardInformation(navigationCondition, about, baseStates, gender, evolution) {
+function switchToPokemonCardInformation(navigationCondition, about, baseStates, evolution) {
     switch (navigationCondition) {
         case "about":
-            changeClassOfPokemonCard(about, baseStates, gender, evolution);
+            changeClassOfPokemonCard(about, baseStates, evolution);
             break;
         case "base_states":
-            changeClassOfPokemonCard(baseStates, about, gender, evolution);
-            break;
-        case "gender":
-            changeClassOfPokemonCard(gender, baseStates, about, evolution);
+            changeClassOfPokemonCard(baseStates, about, evolution);
             break;
         case "evolution":
-            changeClassOfPokemonCard(evolution, gender, baseStates, about);
+            changeClassOfPokemonCard(evolution, baseStates, about);
             break;
     }
 }
 
-function changeClassOfPokemonCard(removeClassDsiplayNone, addClassDsiplayNoneOne, addClassDsiplayNoneTwo, addClassDsiplayNoneThree) {
+function changeClassOfPokemonCard(removeClassDsiplayNone, addClassDsiplayNoneOne, addClassDsiplayNoneTwo) {
     removeClassDsiplayNone.classList.remove("pokemon_information_none");
     addClassDsiplayNoneOne.classList.add("pokemon_information_none");
     addClassDsiplayNoneTwo.classList.add("pokemon_information_none");
-    addClassDsiplayNoneThree.classList.add("pokemon_information_none");
 }
 
 function changeClassPokemonNavigation(pokemonCardIndex, navigationCondition,) {
     let contentNavigationAbout = document.getElementById(`navigation_about_${pokemonCardIndex}`);
     let contentNavigationBaseStates = document.getElementById(`navigation_base_states_${pokemonCardIndex}`);
-    let contentNavigationGender = document.getElementById(`navigation_gender_${pokemonCardIndex}`);
     let contentNavigationEvolution = document.getElementById(`navigation_evolution_${pokemonCardIndex}`);
-    removeClassPokemonNavigation(contentNavigationAbout, contentNavigationBaseStates, contentNavigationGender, contentNavigationEvolution);
+    removeClassPokemonNavigation(contentNavigationAbout, contentNavigationBaseStates, contentNavigationEvolution);
     addClassOnePokemonNavigation(navigationCondition, pokemonCardIndex);
 }
 
-function removeClassPokemonNavigation(about, baseStates, gender, evolution) {
-    [about, baseStates, gender, evolution].forEach(link => {
+function removeClassPokemonNavigation(about, baseStates, evolution) {
+    [about, baseStates, evolution].forEach(link => {
         link.classList.remove("pokemon_card_navigation_link_active");
     });
 }
@@ -328,4 +355,9 @@ function removeClassPokemonNavigation(about, baseStates, gender, evolution) {
 function addClassOnePokemonNavigation(navigationCondition, pokemonCardIndex) {
     let contentNavigationActive = document.getElementById(`navigation_${navigationCondition}_${pokemonCardIndex}`);
     contentNavigationActive.classList.add("pokemon_card_navigation_link_active");
+}
+
+function addEvolutionImages(pokemonCardIndex) {
+    let contentEvolutionImages = document.getElementById(`evolution_${pokemonCardIndex}`);
+    contentEvolutionImages.innerHTML = getPokemonCardEvolutionTemplate(pokemonCardIndex);
 }
