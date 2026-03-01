@@ -80,3 +80,42 @@
     color: rgba(158, 156, 156, 1);
     font-weight: bold;
 }
+
+@media(min-width: 630px) and (max-width: 939px) {
+    .pokeball_img {
+        height: 80px;
+        width: 80px;
+    }
+
+    .search_input {
+        width: 200px;
+        height: 32px;
+    }
+
+    .search_button {
+        width: 80px;
+        height: 32px;
+    }
+}
+
+@media(min-width: 320px) and (max-width: 629px) {
+    .pokeball_img {
+        height: 64px;
+        width: 64px;
+    }
+
+    .search_input {
+        width: 120px;
+        height: 32px;
+    }
+
+    .search_button {
+        width: 64px;
+        height: 32px;
+    }
+
+    .pokemon_img_size {
+        width: 120px;
+        height: 120px;
+    }
+}

@@ -34,7 +34,7 @@ function getPokemonCardTemplate(pokemonCardIndex) {
             <div class="pokemon_card_information">
                 <nav class="pokemon_card_navigation">
                     <a id="navigation_about_${pokemonCardIndex}" onclick="openPokemonInformation(${pokemonCardIndex}, 'about')" class="pokemon_card_navigation_link pokemon_card_navigation_link_active" href="#about_${pokemonCardIndex}">About</a>
-                    <a id="navigation_base_states_${pokemonCardIndex}" onclick="openPokemonInformation(${pokemonCardIndex}, 'base_states')" class="pokemon_card_navigation_link" href="#base_states_${pokemonCardIndex}">Base Stats</a>
+                    <a id="navigation_base_states_${pokemonCardIndex}" onclick="openPokemonInformation(${pokemonCardIndex}, 'base_states')" class="pokemon_card_navigation_link pokemon_card_navigation_link_base_stats" href="#base_states_${pokemonCardIndex}">Base Stats</a>
                     <a id="navigation_evolution_${pokemonCardIndex}" onclick="openPokemonInformation(${pokemonCardIndex}, 'evolution')" class="pokemon_card_navigation_link" href="#evolution">Evolution</a>
                 </nav> 
                 <span class="pokemon_informations">
@@ -62,34 +62,35 @@ function getPokemonCardTemplate(pokemonCardIndex) {
                         <table class="base_stat_table">
                             <tr>
                                 <td class="base_stat_name">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[0].stat.name}:</td>
-                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[0].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[0].base_stat}</div></td>
+                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}_0" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[0].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[0].base_stat}</div></td>
                             </tr>
                             <tr>
                                 <td class="base_stat_name">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[1].stat.name}:</td>
-                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[1].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[1].base_stat}</div></td>
+                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}_1" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[1].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[1].base_stat}</div></td>
                             </tr>
                             <tr>
                                 <td class="base_stat_name">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[2].stat.name}:</td>
-                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[2].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[2].base_stat}</div></td>
+                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}_2" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[2].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[2].base_stat}</div></td>
                             </tr>
                             <tr>
                                 <td class="base_stat_name">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[3].stat.name}:</td>
-                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[3].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[3].base_stat}</div></td>
+                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}_3" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[3].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[3].base_stat}</div></td>
                             </tr>
                             <tr>
                                 <td class="base_stat_name">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[4].stat.name}:</td>
-                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[4].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[4].base_stat}</div></td>
+                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}_4" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[4].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[4].base_stat}</div></td>
                             </tr>
                             <tr>
                                 <td class="base_stat_name">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[5].stat.name}:</td>
-                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[5].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[5].base_stat}</div></td>
+                                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}_5" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[5].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[5].base_stat}</div></td>
                             </tr>
                         </table>
                     </span>
                     <span id="evolution_${pokemonCardIndex}" class="pokemon_information_none">
-
+                        
                     </span>
                 </span>
+            </div>
             <footer class="pokemon_card_footer">
                 <button onclick="nextOrPreviousPokemonCard(${pokemonCardIndex}, 'previous')" id="previous_pokemon_${pokemonCardIndex}" class="button pokemon_card_nexTo_button" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">&#8592</button>
                 <button onclick="nextOrPreviousPokemonCard(${pokemonCardIndex}, 'next')" id="next_pokemon_${pokemonCardIndex}" class="button pokemon_card_nexTo_button" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">&#8594</button>
@@ -98,8 +99,12 @@ function getPokemonCardTemplate(pokemonCardIndex) {
 }
 
 function getPokemonCardEvolutionTemplate(pokemonCardIndex) {
-    return `<img class="pokemon_img_size_card" src="${currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_start_img}">
-            <img class="pokemon_img_size_card" src="${currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_to_img}">
-            <img class="pokemon_img_size_card pokemon_img_none" src="${currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_end_img}">
+    return `<div class="pokemon_evolution">
+                <img class="pokemon_img_size_card pokemon_img_size_card_respo" src="${currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_start_img}">
+                <p class="pokemon_evolution_to">>></p>
+                <img class="pokemon_img_size_card pokemon_img_size_card_respo" src="${currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_to_img}">
+                <p id="pokemon_evolution_to_second_${pokemonCardIndex}" class="pokemon_evolution_to">>></p>
+                <img id="pokemon_evolution_to_second_img_${pokemonCardIndex}" class="pokemon_img_size_card pokemon_img_none pokemon_img_size_card_respo" src="${currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_end_img}">
+            </div>
             `
 }

@@ -17,15 +17,16 @@ let contentNavigationAbout = document.getElementById('navigation_about');
 let currentPokemonCard = 0;
 
 function init() {
-    showLoadingScreenFirstTime();
     showPokemonsList();
     initPokemonsList();
 }
 
 async function initPokemonsList() {
-    await renderPokemonsMainList(1, 41);
-    currentPokemonsMainList = pokemonsMainList.slice(0, 20);
+    showLoadingScreenFirstTime();
+    await renderPokemonsMainList(1, 21);
+    currentPokemonsMainList = pokemonsMainList;
     renderPokemonCard();
+    closeLoadingScreen();
 }
 
 async function getPokemonData(id = "") {
@@ -123,6 +124,20 @@ function addEvolutionStepsToPokemonsMainList(pokemonCardIndex) {
     }
 }
 
+function checkTextColorInBaseStats(pokemonCardIndex) {
+    let contentBaseStateBars = [
+        document.getElementById(`base_stat_bar_${pokemonCardIndex}_0`),
+        document.getElementById(`base_stat_bar_${pokemonCardIndex}_1`),
+        document.getElementById(`base_stat_bar_${pokemonCardIndex}_2`),
+        document.getElementById(`base_stat_bar_${pokemonCardIndex}_3`),
+        document.getElementById(`base_stat_bar_${pokemonCardIndex}_4`),
+        document.getElementById(`base_stat_bar_${pokemonCardIndex}_5`)
+    ];
+    if (whiteAndYellowBg(pokemonCardIndex)) {
+        styleGreyBars(contentBaseStateBars);
+    }
+}
+
 function checkTextColor(pokemonCardIndex) {
     let contentPokemonCardId = document.getElementById(`pokemon_id_${pokemonCardIndex}`);
     let contentPokemonCardName = document.getElementById(`pokemon_name_${pokemonCardIndex}`);
@@ -139,6 +154,12 @@ function whiteAndYellowBg(pokemonCardIndex) {
 function styleGrey(pokeId, pokeName, pokeType) {
     [pokeId, pokeName, pokeType].forEach(element => {
         element.style = 'color: rgba(158, 156, 156, 1)';
+    });
+}
+
+function styleGreyBars(pokeStateBars) {
+    pokeStateBars.forEach(bar => {
+        bar.style.color = 'rgba(158, 156, 156, 1)';
     });
 }
 
@@ -211,18 +232,21 @@ function showLoadingScreenAgain() {
 
 function addLoadingScreenTwoSek() {
     contentLoadingScreen.classList.remove('loading_screen_none');
-    setTimeout(() => {
-        contentLoadingScreen.classList.add('loading_screen_none');
-    }, 2000);
+}
+
+function closeLoadingScreen() {
+    contentLoadingScreen.classList.add('loading_screen_none');
+}
+
+function closeLoadingScreenAgain() {
+    contentLoadingScreen.classList.remove('loading_screen_overlay');
+    document.body.classList.remove('scroll_lock');
+    closeLoadingScreen();
 }
 
 function addLoadingScreenAsOverlay() {
     contentLoadingScreen.classList.add('loading_screen_overlay');
     document.body.classList.add('scroll_lock');
-    setTimeout(() => {
-        contentLoadingScreen.classList.remove('loading_screen_overlay');
-        document.body.classList.remove('scroll_lock');
-    }, 2000);
 }
 
 function showPokemonsList() {
@@ -233,25 +257,25 @@ function showPokemonsList() {
 
 function filterAndShowPokemonCards() {
     let filterWord = contentSearchInput.value;
+    let filterWordExist = pokemonsMainList.some(pokemon => pokemon.name.includes(filterWord));
     if (filterWord.length >= 3) {
         currentPokemonsMainList = pokemonsMainList.filter(pokemon => pokemon.name.includes(filterWord));
     } else {
         currentPokemonsMainList = pokemonsMainList;
+        alert("No Pokemon with this name was found!");
     }
     renderPokemonCard();
 }
 
-function loadMorePokemons() {
+async function loadMorePokemons() {
     showLoadingScreenAgain();
-    for (let index = currentPokemonsMainList.length; index < pokemonsMainList.length; index++) {
-        currentPokemonsMainList.push(pokemonsMainList[index]);
-    }
+    await renderPokemonsMainList(1, 41);
+    closeLoadingScreenAgain();
     renderPokemonCard();
     toggleButtonsClass();
 }
 
 function loadLessPokemons() {
-    showLoadingScreenAgain();
     for (let index = currentPokemonsMainList.length; index > 20; index--) {
         currentPokemonsMainList.pop();
     }
@@ -316,6 +340,8 @@ function openPokemonInformation(pokemonCardIndex, navigationCondition) {
     switchToPokemonCardInformation(navigationCondition, contentPokemonInformationAbout, contentPokemonInformationBaseState, contentPokemonInformationEvolution);
     changeClassPokemonNavigation(pokemonCardIndex, navigationCondition);
     addEvolutionImages(pokemonCardIndex);
+    notShowEvolutionSecond(pokemonCardIndex);
+    checkTextColorInBaseStats(pokemonCardIndex);
 }
 
 function switchToPokemonCardInformation(navigationCondition, about, baseStates, evolution) {
@@ -360,4 +386,13 @@ function addClassOnePokemonNavigation(navigationCondition, pokemonCardIndex) {
 function addEvolutionImages(pokemonCardIndex) {
     let contentEvolutionImages = document.getElementById(`evolution_${pokemonCardIndex}`);
     contentEvolutionImages.innerHTML = getPokemonCardEvolutionTemplate(pokemonCardIndex);
+}
+
+function notShowEvolutionSecond(pokemonCardIndex) {
+    if (currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_end == undefined) {
+        let contentEvolutionSecond = document.getElementById(`pokemon_evolution_to_second_${pokemonCardIndex}`);
+        let contentEvolutionSecondImg = document.getElementById(`pokemon_evolution_to_second_img_${pokemonCardIndex}`);
+        contentEvolutionSecond.classList.add('pokemon_information_none');
+        contentEvolutionSecondImg.classList.add('pokemon_information_none');
+    }
 }

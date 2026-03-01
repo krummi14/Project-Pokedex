@@ -41,6 +41,37 @@ header {
     gap: 8px;
 }
 
+@media(min-width: 630px) and (max-width: 939px) {
+    header {
+        height: 100px;
+        padding: 16px 56px;
+    }
+
+    .header_maxWidth {
+        height: 100px;
+    }
+
+    .header_logo_text {
+        font-size: 32px;
+    }
+}
+
+@media(min-width: 320px) and (max-width: 629px) {
+    header {
+        height: 160px;
+        padding: 16px 40px;
+    }
+
+    .header_maxWidth {
+        flex-direction: column;
+        height: 100%
+    }
+
+    .header_logo_text {
+        font-size: 24px;
+    }
+}
+
 /* end of header style */
 
 /* style of footer */
@@ -75,6 +106,44 @@ footer {
 .fsz {
     font-family: 'Bangers';
     font-size: 36px;
+}
+
+@media(min-width: 630px) and (max-width: 939px) {
+    footer {
+        height: 100px;
+        padding: 16px 56px;
+    }
+
+    .footer_maxWidth {
+        height: 100px;
+    }
+
+    .footer_text {
+        font-size: 14px;
+    }
+}
+
+@media(min-width: 320px) and (max-width: 629px) {
+    footer {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        height: 160px;
+        padding: 16px 40px;
+    }
+
+    .footer_maxWidth {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        height: 160px;
+    }
+
+    .footer_text {
+        font-size: 14px;
+    }
 }
 
 /* end of footer style */
@@ -239,11 +308,51 @@ footer {
     margin-top: 48px;
 }
 
+@media(min-width: 630px) and (max-width: 939px) {
+    .pokemon_list {
+        padding: 80px 56px;
+    }
+
+    .pokemon_list::before {
+        width: 500px;
+        height: 500px;
+    }
+}
+
+@media(min-width: 320px) and (max-width: 629px) {
+    .pokemon_list {
+        padding: 80px 40px;
+    }
+
+    .pokemon_list::before {
+        width: 220px;
+        height: 220px;
+    }
+
+    .pokemon_card_list {
+        gap: 40px;
+    }
+
+    .pokemon_main_card {
+        width: 210px;
+    }
+
+    .pokemon_id {
+        font-size: 16px;
+    }
+
+    .pokemon_name {
+        font-size: 24px;
+    }
+}
+
 /* end of pokemon list style */
 
 /* style of pokemon_card_dialog*/
 /* style of pokemon_card_dialog_header*/
 .pokemon_card_content {
+    display: flex;
+    flex-direction: column;
     border: none;
     border-radius: 40px;
 }
@@ -303,6 +412,7 @@ footer {
 
 /* style of pokemon_card_dialog_information*/
 .pokemon_card_information {
+    height: 350px;
     padding: 24px;
 }
 
@@ -343,7 +453,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 24px 0;
+    margin-top: 40px;
 }
 
 .row_padding_left {
@@ -373,15 +483,68 @@ footer {
     color: white;
     border-radius: 16px;
 }
-/* end of pokemon_card_dialog_information*/
 
-/* style of pokemon_card_dialog_footer*/
-.pokemon_card_footer {
-    height: 40px;
-    background-color: white;
-    padding: 64px 40px;
+.pokemon_evolution {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
 }
 
-/* end of pokemon_card_dialog style_footer*/
-/* end of pokemon_card_dialog style*/
-/* end of main stlye */
+.pokemon_evolution_to {
+    font-size: 24px;
+    color: rgba(158, 156, 156, 1);
+}
+
+@media(min-width: 320px) and (max-width: 629px) {
+    .pokemon_card_navigation_link:hover {
+        height: 32px;
+        width: 80px;
+    }
+
+    .pokemon_card_navigation_link_active {
+        height: 32px;
+        width: 80px;
+    }
+
+    .pokemon_card_navigation_link_base_stats {
+        text-align: center;
+    }
+
+    .pokemon_informations {
+        margin-top: 24px;
+    }
+
+    .pokemon_evolution {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .pokemon_evolution_to {
+        rotate: 90deg;
+    }
+
+    .pokemon_img_size_card_respo {
+        width: 56px;
+        height: 56px;
+    }
+
+    .pokemon_card_footer {
+        flex-direction: row;
+        gap: 32px;
+    }
+}
+
+    /* end of pokemon_card_dialog_information*/
+
+    /* style of pokemon_card_dialog_footer*/
+    .pokemon_card_footer {
+        height: 40px;
+        background-color: white;
+        padding: 64px 40px;
+    }
+
+    /* end of pokemon_card_dialog style_footer*/
+    /* end of pokemon_card_dialog style*/
+    /* end of main stlye */
