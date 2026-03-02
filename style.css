@@ -308,6 +308,18 @@ footer {
     margin-top: 48px;
 }
 
+.search_information_screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 80px 80px;
+    z-index: 2;
+}
+
 @media(min-width: 630px) and (max-width: 939px) {
     .pokemon_list {
         padding: 80px 56px;
@@ -532,19 +544,19 @@ footer {
 
     .pokemon_card_footer {
         flex-direction: row;
-        gap: 32px;
+        justify-content: space-between;
     }
 }
 
-    /* end of pokemon_card_dialog_information*/
+/* end of pokemon_card_dialog_information*/
 
-    /* style of pokemon_card_dialog_footer*/
-    .pokemon_card_footer {
-        height: 40px;
-        background-color: white;
-        padding: 64px 40px;
-    }
+/* style of pokemon_card_dialog_footer*/
+.pokemon_card_footer {
+    height: 40px;
+    background-color: white;
+    padding: 64px 40px;
+}
 
-    /* end of pokemon_card_dialog style_footer*/
-    /* end of pokemon_card_dialog style*/
-    /* end of main stlye */
+/* end of pokemon_card_dialog style_footer*/
+/* end of pokemon_card_dialog style*/
+/* end of main stlye */

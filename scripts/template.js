@@ -2,7 +2,7 @@ function getMainPokemonCardTemplate(pokemonCardIndex) {
     return `<article onclick="openCurrentPokemonCard(${pokemonCardIndex})" class="pokemon_main_card" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">
                 <h3 id="pokemon_id_${pokemonCardIndex}" class="pokemon_id"># ${currentPokemonsMainList[pokemonCardIndex].id}</h3>
                 <figure class="pokemon_img_name">
-                    <img class="pokemon_img_size" src="${currentPokemonsMainList[pokemonCardIndex].img_url}"
+                    <img loading="lazy" class="pokemon_img_size" src="${currentPokemonsMainList[pokemonCardIndex].img_url}"
                     <figcaption class="pokemon_img_name">
                         <h2 id="pokemon_name_${pokemonCardIndex}" class="pokemon_name">${currentPokemonsMainList[pokemonCardIndex].name}</h2>
                     </figcaption>
@@ -91,7 +91,7 @@ function getPokemonCardTemplate(pokemonCardIndex) {
                     </span>
                 </span>
             </div>
-            <footer class="pokemon_card_footer">
+            <footer id="pokemon_card_footer_${pokemonCardIndex}" class="pokemon_card_footer">
                 <button onclick="nextOrPreviousPokemonCard(${pokemonCardIndex}, 'previous')" id="previous_pokemon_${pokemonCardIndex}" class="button pokemon_card_nexTo_button" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">&#8592</button>
                 <button onclick="nextOrPreviousPokemonCard(${pokemonCardIndex}, 'next')" id="next_pokemon_${pokemonCardIndex}" class="button pokemon_card_nexTo_button" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">&#8594</button>
             </footer>

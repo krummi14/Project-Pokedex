@@ -11,9 +11,11 @@ let contentPokemonCardList = document.getElementById('pokemon_card_list');
 let contentSearchInput = document.getElementById('search_input_value');
 let contentLoadLessButton = document.getElementById('load_less_button');
 let contentLoadMoreButton = document.getElementById('load_more_button');
+let contentShowButton = document.getElementById('show_all_button');
 let contentPokeomonCardDialog = document.getElementById('pokemon_card');
 let contentPokemonCard = document.getElementById('pokemon_card_content');
 let contentNavigationAbout = document.getElementById('navigation_about');
+let contentSearchInformation = document.getElementById("search_information");
 let currentPokemonCard = 0;
 
 function init() {
@@ -257,14 +259,24 @@ function showPokemonsList() {
 
 function filterAndShowPokemonCards() {
     let filterWord = contentSearchInput.value;
-    let filterWordExist = pokemonsMainList.some(pokemon => pokemon.name.includes(filterWord));
     if (filterWord.length >= 3) {
         currentPokemonsMainList = pokemonsMainList.filter(pokemon => pokemon.name.includes(filterWord));
+        contentLoadMoreButton.classList.add('load_button_none');
+        contentLoadLessButton.classList.add('load_button_none');
+        contentShowButton.classList.remove('load_button_none');
     } else {
         currentPokemonsMainList = pokemonsMainList;
-        alert("No Pokemon with this name was found!");
+        openInfoToWriteAtLeastThreeLetters();
     }
     renderPokemonCard();
+}
+
+function openInfoToWriteAtLeastThreeLetters() {
+    contentSearchInformation.classList.remove("pokemon_information_none");
+}
+
+function closeSearchInformation() {
+    contentSearchInformation.classList.add("pokemon_information_none");
 }
 
 async function loadMorePokemons() {
@@ -272,7 +284,20 @@ async function loadMorePokemons() {
     await renderPokemonsMainList(1, 41);
     closeLoadingScreenAgain();
     renderPokemonCard();
-    toggleButtonsClass();
+    toggleButtonsClass(contentLoadMoreButton, contentLoadLessButton);
+}
+
+function showAllPokemons() {
+    currentPokemonsMainList = pokemonsMainList;
+    renderPokemonCard();
+    contentShowButton.classList.add('load_button_none');
+    if (currentPokemonsMainList.length == 20) {
+        contentLoadMoreButton.classList.remove('load_button_none');
+        contentLoadLessButton.classList.add('load_button_none');
+    } else {
+        contentLoadMoreButton.classList.add('load_button_none');
+        contentLoadLessButton.classList.remove('load_button_none');
+    }
 }
 
 function loadLessPokemons() {
@@ -280,17 +305,18 @@ function loadLessPokemons() {
         currentPokemonsMainList.pop();
     }
     renderPokemonCard();
-    toggleButtonsClass();
+    toggleButtonsClass(contentLoadLessButton, contentLoadMoreButton);
 }
 
-function toggleButtonsClass() {
-    contentLoadLessButton.classList.toggle('load_button_none');
-    contentLoadMoreButton.classList.toggle('load_button_none');
+function toggleButtonsClass(addClass, removeClass) {
+    addClass.classList.add('load_button_none');
+    removeClass.classList.remove('load_button_none');
 }
 
 function openCurrentPokemonCard(pokemonCardIndex) {
     currentPokemonCard = pokemonCardIndex;
     openPokemonCard(null, pokemonCardIndex);
+    stopMovingToNextOrPreviousPocemonCard(pokemonCardIndex, currentPokemonCard);
 }
 
 function openPokemonCard(event, pokemonCardIndex) {
@@ -331,6 +357,22 @@ function nextOrPreviousPokemonCard(pokemonCardIndex, buttonCondition) {
     }
     pokemonCardIndex = currentPokemonCard;
     createPokemonCard(pokemonCardIndex);
+    stopMovingToNextOrPreviousPocemonCard(pokemonCardIndex);
+}
+
+function stopMovingToNextOrPreviousPocemonCard(pokemonCardIndex) {
+    let contentBothButtons = document.getElementById(`pokemon_card_footer_${pokemonCardIndex}`)
+    let contentPokemonCardNextButton = document.getElementById(`next_pokemon_${pokemonCardIndex}`);
+    let contentPokemonCardPreviousButton = document.getElementById(`previous_pokemon_${pokemonCardIndex}`);
+    if (pokemonCardIndex <= 0) {
+        pokemonCardIndex = 0;
+        contentPokemonCardPreviousButton.classList.add("pokemon_information_none");
+        contentBothButtons.style.justifyContent = "end";
+    } else if (pokemonCardIndex >= currentPokemonsMainList.length - 1) {
+        pokemonCardIndex = currentPokemonsMainList.length - 1;
+        contentPokemonCardNextButton.classList.add("pokemon_information_none");
+        contentBothButtons.style.justifyContent = "start";
+    }
 }
 
 function openPokemonInformation(pokemonCardIndex, navigationCondition) {

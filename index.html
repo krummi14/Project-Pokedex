@@ -42,6 +42,13 @@
                 <p class="loading_text">Loading ...</p>
             </section>
 
+            <section id="search_information" class="search_information_screen pokemon_information_none">
+                <div class="search_inforamtion">
+                    <button onclick="closeSearchInformation()" class="button">Close Information</button>
+                    <p class="search_information_text">No pokémons were found!</p>
+                </div>
+            </section>
+
             <section id="pokemon_list" class="pokemon_list pokemon_list_none">
                 <div id="pokemon_card_list" class="pokemon_card_list"></div>
                 <div class="load_more_pokemons">
@@ -49,6 +56,7 @@
                         class="button load_more_button load_button_none">Load less Pokémons</button>
                     <button onclick="loadMorePokemons()" id="load_more_button" class="button load_more_button">Load more
                         Pokémons</button>
+                    <button onclick="showAllPokemons()" id="show_all_button" class="button load_more_button load_button_none">Show all Pokémons</button>
                 </div>
             </section>
 
