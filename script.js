@@ -16,15 +16,12 @@ let contentPokeomonCardDialog = document.getElementById('pokemon_card');
 let contentPokemonCard = document.getElementById('pokemon_card_content');
 let contentNavigationAbout = document.getElementById('navigation_about');
 let contentSearchInformation = document.getElementById("search_information");
+let contentFooter = document.getElementById("footer");
 let currentPokemonCard = 0;
-
-function init() {
-    initPokemonsList();
-}
 
 async function initPokemonsList() {
     showLoadingScreenFirstTime();
-    await renderPokemonsMainList(1, 4);
+    await renderPokemonsMainList(1, 21);
     currentPokemonsMainList = pokemonsMainList;
     renderPokemonCard();
     closeLoadingScreen();
@@ -68,6 +65,7 @@ function createAllLists(id, pokemonResponseAsJson, pokemonSpeciesResponseAsJson,
 }
 
 function createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson) {
+    defineColorOfPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson);
     return {
         id: pokemonResponseAsJson.id,
         name: pokemonResponseAsJson.name,
@@ -83,6 +81,21 @@ function createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJ
         }),
         color: pokemonSpeciesResponseAsJson.color.name
     };
+}
+
+function defineColorOfPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson) {
+    if (pokemonResponseAsJson.types[0].type.name == "bug") {
+        pokemonSpeciesResponseAsJson.color.name = "white";
+    }
+    if (pokemonResponseAsJson.types.length == 2 && pokemonResponseAsJson.types[0].type.name == "bug" && pokemonResponseAsJson.types[1].type.name == "poison") {
+        pokemonSpeciesResponseAsJson.color.name = "yellow";
+    }
+    if (pokemonResponseAsJson.types.length == 1 && pokemonResponseAsJson.types[0].type.name == "normal") {
+        pokemonSpeciesResponseAsJson.color.name = "purple";
+    }
+    if (pokemonResponseAsJson.types[0].type.name == "fire") {
+        pokemonSpeciesResponseAsJson.color.name = "red";
+    }
 }
 
 function createPokemonsBaseStatesList(pokemonResponseAsJson) {
@@ -117,9 +130,9 @@ function renderPokemonCard() {
     contentPokemonCardList.innerHTML = "";
     for (let pokemonCardIndex = 0; pokemonCardIndex < currentPokemonsMainList.length; pokemonCardIndex++) {
         contentPokemonCardList.innerHTML += getMainPokemonCardTemplate(pokemonCardIndex);
-        checkTextColor(pokemonCardIndex);
         checkAmountOfTypes(pokemonCardIndex);
         addEvolutionStepsToPokemonsMainList(pokemonCardIndex);
+        checkTextColor(pokemonCardIndex);
     }
 }
 
@@ -138,19 +151,6 @@ function addEvolutionStepsToPokemonsMainList(pokemonCardIndex) {
     }
 }
 
-function checkTextColorInBaseStats(pokemonCardIndex) {
-    let contentBaseStateBars = [
-        document.getElementById(`base_stat_bar_${pokemonCardIndex}_0`),
-        document.getElementById(`base_stat_bar_${pokemonCardIndex}_1`),
-        document.getElementById(`base_stat_bar_${pokemonCardIndex}_2`),
-        document.getElementById(`base_stat_bar_${pokemonCardIndex}_3`),
-        document.getElementById(`base_stat_bar_${pokemonCardIndex}_4`),
-        document.getElementById(`base_stat_bar_${pokemonCardIndex}_5`)];
-    if (whiteAndYellowBg(pokemonCardIndex)) {
-        styleGreyBars(contentBaseStateBars);
-    }
-}
-
 function checkTextColor(pokemonCardIndex) {
     let contentPokemonCardId = document.getElementById(`pokemon_id_${pokemonCardIndex}`);
     let contentPokemonCardName = document.getElementById(`pokemon_name_${pokemonCardIndex}`);
@@ -166,7 +166,7 @@ function whiteAndYellowBg(pokemonCardIndex) {
 
 function styleGrey(pokeId, pokeName, pokeType) {
     [pokeId, pokeName, pokeType].forEach(element => {
-        element.style = 'color: rgba(158, 156, 156, 1)';
+        element.style.color = 'rgba(158, 156, 156, 1)';
     });
 }
 
@@ -176,62 +176,22 @@ function styleGreyBars(pokeStateBars) {
     });
 }
 
-function checkTextColorOfPokeCardDialog(pokemonCardIndex) {
-    let contentPokemonCardIdAtDialog = document.getElementById(`pokemon_card_id_${pokemonCardIndex}`);
-    let contentPokemonCardNameAtDialog = document.getElementById(`pokemon_card_name_${pokemonCardIndex}`);
-    let contentPokemonCardNextButton = document.getElementById(`next_pokemon_${pokemonCardIndex}`);
-    let contentPokemonCardPreviousButton = document.getElementById(`previous_pokemon_${pokemonCardIndex}`);
-    if (whiteAndYellowBg(pokemonCardIndex)) {
-        styleGreyAtPokeCardDialog(contentPokemonCardIdAtDialog, contentPokemonCardNameAtDialog);
-        styleBgGreyAtPokeCardDialog(contentPokemonCardNextButton, contentPokemonCardPreviousButton);
-    }
-}
-
-function styleGreyAtPokeCardDialog(pokeId, pokeName) {
-    [pokeId, pokeName].forEach(element => {
-        element.style = 'color: rgba(158, 156, 156, 1)';
-    });
-}
-
-function styleBgGreyAtPokeCardDialog(nextButton, previousButton) {
-    [nextButton, previousButton].forEach(element => {
-        element.style.backgroundColor = 'rgba(158, 156, 156, 1)';
-        element.style.color = 'white';
-    });
-}
-
 function checkAmountOfTypes(pokemonCardIndex) {
     let contentSecondPokemonType = document.getElementById(`second_pokemon_type_${pokemonCardIndex}`);
     let contentPokemonCardTypes = document.getElementById(`pokemon_types_${pokemonCardIndex}`);
     if (typeTextIsUndefined(contentSecondPokemonType)) {
         stylePokeCard(contentSecondPokemonType, contentPokemonCardTypes);
+        checkTextColor(pokemonCardIndex);
     }
-}
-
-function typeTextIsUndefined(contentSecondPokemonType) {
-    return contentSecondPokemonType.innerText == "undefined";
 }
 
 function stylePokeCard(contentSecondPokemonType, contentPokemonCardTypes) {
     contentSecondPokemonType.classList.add("pokemon_type_none");
-    contentPokemonCardTypes.style = 'justify-content: center';
+    contentPokemonCardTypes.style.justifyContent = 'center';
 }
 
-function checkAmountOfTypesAtPokemonCardDialog(pokemonCardIndex) {
-    let contentSecondPokemonTypeAtPokemonCard = document.getElementById(`second_pokemon_card_type_${pokemonCardIndex}`);
-    let contentPokemonCardTypesAtPokemonDialog = document.getElementById(`pokemon_card_types_${pokemonCardIndex}`);
-    if (typeTextIsUndefinedAtPokemonCardDialog(contentSecondPokemonTypeAtPokemonCard)) {
-        stylePokeCardAtPokeDialog(contentSecondPokemonTypeAtPokemonCard, contentPokemonCardTypesAtPokemonDialog);
-    }
-}
-
-function typeTextIsUndefinedAtPokemonCardDialog(contentSecondPokemonTypeAtPokemonCard) {
-    return contentSecondPokemonTypeAtPokemonCard.innerText == "undefined";
-}
-
-function stylePokeCardAtPokeDialog(contentSecondPokemonTypeAtPokemonCard, contentPokemonCardTypesAtPokemonDialog) {
-    contentSecondPokemonTypeAtPokemonCard.classList.add("pokemon_type_none");
-    contentPokemonCardTypesAtPokemonDialog.style = 'justify-content: center';
+function typeTextIsUndefined(contentSecondPokemonType) {
+    return contentSecondPokemonType.innerText == "undefined";
 }
 
 function showLoadingScreenFirstTime() {
@@ -306,12 +266,13 @@ function closeSearchInformation() {
 
 async function loadMorePokemons() {
     showLoadingScreenAgain();
-    await renderPokemonsMainList(currentPokemonsMainList.length, currentPokemonsMainList.length + 4);
+    await renderPokemonsMainList(currentPokemonsMainList.length, currentPokemonsMainList.length + 21);
     closeLoadingScreenAgain();
     renderPokemonCard();
     checkIfPokemonHasThreeEvolutionSteps();
     renderPokemonCard();
-    if (currentPokemonsMainList.length == 41) {
+    contentFooter.scrollIntoView();
+    if (currentPokemonsMainList.length == 40) {
         toggleButtonsClass(contentLoadMoreButton, contentLoadLessButton);
     }
 }
@@ -328,7 +289,8 @@ function showAllPokemons() {
     currentPokemonsMainList = pokemonsMainList;
     renderPokemonCard();
     contentShowButton.classList.add('load_button_none');
-    if (currentPokemonsMainList.length == 41) {
+    contentFooter.scrollIntoView();
+    if (currentPokemonsMainList.length == 40) {
         contentLoadMoreButton.classList.add('load_button_none');
         contentLoadLessButton.classList.remove('load_button_none');
     } else {
@@ -338,10 +300,11 @@ function showAllPokemons() {
 }
 
 function loadLessPokemons() {
-    currentPokemonsMainList.length -= 4;
+    currentPokemonsMainList.length -= 19;
     currentPokemonsMainList.pop();
     renderPokemonCard();
-    if (currentPokemonsMainList.length == 5) {
+    contentFooter.scrollIntoView();
+    if (currentPokemonsMainList.length == 20) {
         toggleButtonsClass(contentLoadLessButton, contentLoadMoreButton);
     }
 }
@@ -349,139 +312,4 @@ function loadLessPokemons() {
 function toggleButtonsClass(addClass, removeClass) {
     addClass.classList.add('load_button_none');
     removeClass.classList.remove('load_button_none');
-}
-
-function openCurrentPokemonCard(pokemonCardIndex) {
-    currentPokemonCard = pokemonCardIndex;
-    openPokemonCard(null, pokemonCardIndex);
-    stopMovingToNextOrPreviousPocemonCard(pokemonCardIndex, currentPokemonCard);
-}
-
-function openPokemonCard(event, pokemonCardIndex) {
-    if (event) event.stopPropagation();
-    createPokemonCard(pokemonCardIndex);
-}
-
-function createPokemonCard(pokemonCardIndex) {
-    contentPokemonCard.innerHTML = getPokemonCardTemplate(pokemonCardIndex);
-    contentPokeomonCardDialog.showModal();
-    contentPokeomonCardDialog.classList.add("dialog_opend");
-    document.body.classList.add('scroll_lock');
-    checkAmountOfTypesAtPokemonCardDialog(pokemonCardIndex);
-    checkTextColorOfPokeCardDialog(pokemonCardIndex);
-}
-
-function closePokemonCard() {
-    recreatePokemonCard();
-    setTimeout(() => {
-        contentPokeomonCardDialog.close();
-    }, 125);
-}
-
-function recreatePokemonCard() {
-    contentPokeomonCardDialog.classList.remove("dialog_opend");
-    document.body.classList.remove('scroll_lock');
-}
-
-function closePokemonCardOnBodyclick(event) {
-    event.stopPropagation()
-}
-
-function nextOrPreviousPokemonCard(pokemonCardIndex, buttonCondition) {
-    if (buttonCondition == "next") {
-        currentPokemonCard++;
-    } else if (buttonCondition == "previous") {
-        currentPokemonCard--;
-    }
-    pokemonCardIndex = currentPokemonCard;
-    createPokemonCard(pokemonCardIndex);
-    stopMovingToNextOrPreviousPocemonCard(pokemonCardIndex);
-}
-
-function stopMovingToNextOrPreviousPocemonCard(pokemonCardIndex) {
-    let contentBothButtons = document.getElementById(`pokemon_card_footer_${pokemonCardIndex}`)
-    let contentPokemonCardNextButton = document.getElementById(`next_pokemon_${pokemonCardIndex}`);
-    let contentPokemonCardPreviousButton = document.getElementById(`previous_pokemon_${pokemonCardIndex}`);
-    if (pokemonCardIndex <= 0) {
-        pokemonCardIndex = 0;
-        contentPokemonCardPreviousButton.classList.add("pokemon_information_none");
-        contentBothButtons.style.justifyContent = "end";
-    } else if (pokemonCardIndex >= currentPokemonsMainList.length - 1) {
-        pokemonCardIndex = currentPokemonsMainList.length - 1;
-        contentPokemonCardNextButton.classList.add("pokemon_information_none");
-        contentBothButtons.style.justifyContent = "start";
-    }
-}
-
-function openPokemonInformation(pokemonCardIndex, navigationCondition) {
-    let contentPokemonInformationAbout = document.getElementById(`about_${pokemonCardIndex}`);
-    let contentPokemonInformationBaseState = document.getElementById(`base_states_${pokemonCardIndex}`);
-    let contentPokemonInformationEvolution = document.getElementById(`evolution_${pokemonCardIndex}`);
-    switchToPokemonCardInformation(navigationCondition, contentPokemonInformationAbout, contentPokemonInformationBaseState, contentPokemonInformationEvolution);
-    changeClassPokemonNavigation(pokemonCardIndex, navigationCondition);
-    addEvolutionImages(pokemonCardIndex);
-    notShowEvolutionSecond(pokemonCardIndex);
-    checkTextColorInBaseStats(pokemonCardIndex);
-    createBaseStateTable(pokemonCardIndex);
-}
-
-function switchToPokemonCardInformation(navigationCondition, about, baseStates, evolution) {
-    switch (navigationCondition) {
-        case "about":
-            changeClassOfPokemonCard(about, baseStates, evolution);
-            break;
-        case "base_states":
-            changeClassOfPokemonCard(baseStates, about, evolution);
-            break;
-        case "evolution":
-            changeClassOfPokemonCard(evolution, baseStates, about);
-            break;
-    }
-}
-
-function changeClassOfPokemonCard(removeClassDsiplayNone, addClassDsiplayNoneOne, addClassDsiplayNoneTwo) {
-    removeClassDsiplayNone.classList.remove("pokemon_information_none");
-    addClassDsiplayNoneOne.classList.add("pokemon_information_none");
-    addClassDsiplayNoneTwo.classList.add("pokemon_information_none");
-}
-
-function changeClassPokemonNavigation(pokemonCardIndex, navigationCondition,) {
-    let contentNavigationAbout = document.getElementById(`navigation_about_${pokemonCardIndex}`);
-    let contentNavigationBaseStates = document.getElementById(`navigation_base_states_${pokemonCardIndex}`);
-    let contentNavigationEvolution = document.getElementById(`navigation_evolution_${pokemonCardIndex}`);
-    removeClassPokemonNavigation(contentNavigationAbout, contentNavigationBaseStates, contentNavigationEvolution);
-    addClassOnePokemonNavigation(navigationCondition, pokemonCardIndex);
-}
-
-function removeClassPokemonNavigation(about, baseStates, evolution) {
-    [about, baseStates, evolution].forEach(link => {
-        link.classList.remove("pokemon_card_navigation_link_active");
-    });
-}
-
-function addClassOnePokemonNavigation(navigationCondition, pokemonCardIndex) {
-    let contentNavigationActive = document.getElementById(`navigation_${navigationCondition}_${pokemonCardIndex}`);
-    contentNavigationActive.classList.add("pokemon_card_navigation_link_active");
-}
-
-function addEvolutionImages(pokemonCardIndex) {
-    let contentEvolutionImages = document.getElementById(`evolution_${pokemonCardIndex}`);
-    contentEvolutionImages.innerHTML = getPokemonCardEvolutionTemplate(pokemonCardIndex);
-}
-
-function notShowEvolutionSecond(pokemonCardIndex) {
-    if (currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_end == undefined) {
-        let contentEvolutionSecond = document.getElementById(`pokemon_evolution_to_second_${pokemonCardIndex}`);
-        let contentEvolutionSecondImg = document.getElementById(`pokemon_evolution_to_second_img_${pokemonCardIndex}`);
-        contentEvolutionSecond.classList.add('pokemon_information_none');
-        contentEvolutionSecondImg.classList.add('pokemon_information_none');
-    }
-}
-
-function createBaseStateTable(pokemonCardIndex) {
-    let contentTableBaseStats = document.getElementById(`table_content_${pokemonCardIndex}`);
-    contentTableBaseStats.innerHTML = "";
-    for (let baseStatIndex = 0; baseStatIndex < pokemonsBaseStatesList[pokemonCardIndex].base_stats.length; baseStatIndex++) {
-        contentTableBaseStats.innerHTML += getPokemonCardBaseStatsTemplate(pokemonCardIndex, baseStatIndex);
-    }
 }

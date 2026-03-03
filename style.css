@@ -242,8 +242,8 @@ footer {
     align-items: center;
     justify-content: center;
     border-radius: 64px;
-    border-bottom: 2px solid rgba(158, 156, 156, 1);
-    border-right: 2px solid rgba(158, 156, 156, 1);
+    border-bottom: 4px solid rgba(158, 156, 156, 1);
+    border-right: 4px solid rgba(158, 156, 156, 1);
     border-top: none;
     border-left: none;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
@@ -323,7 +323,7 @@ footer {
     background-color: white;
     width: 560px;
     border-radius: 80px;
-    border: 16px solid rgba(249, 78, 77, 1); 
+    border: 16px solid rgba(249, 78, 77, 1);
     padding: 40px;
     gap: 48px;
 }
@@ -349,11 +349,11 @@ footer {
     }
 
     .pokemon_card_list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-    width: 100%;
-}
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+        width: 100%;
+    }
 }
 
 @media(min-width: 320px) and (max-width: 629px) {
@@ -417,11 +417,17 @@ footer {
     width: 100%;
 }
 
+.close_button_position {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+    gap: 16px;
+}
+
 .pokemon_id_card {
     font-size: 16px;
     color: white;
-    text-align: end;
-    width: 100%;
 }
 
 .pokemon_name_card {
@@ -470,15 +476,17 @@ footer {
     justify-content: center;
     color: rgba(158, 156, 156, 1);
     padding: 24px 0;
+    width: 120px;
+    height: 40px;
+    border: 1px solid transparent;
+    border-radius: 40%;
 }
 
 .pokemon_card_navigation_link:hover {
     background-color: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(158, 156, 156, 1);
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 2);
-    height: 40px;
-    width: 120px;
-    border-radius: 40%;
+    border-color: rgba(158, 156, 156, 1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
 }
 
 .pokemon_card_navigation_link_active {
@@ -539,6 +547,11 @@ footer {
 }
 
 @media(min-width: 320px) and (max-width: 629px) {
+    .pokemon_card_navigation_link {
+        height: 32px;
+        width: 80px;
+    }
+
     .pokemon_card_navigation_link:hover {
         height: 32px;
         width: 80px;

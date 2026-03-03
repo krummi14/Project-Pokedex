@@ -1,5 +1,5 @@
 function getMainPokemonCardTemplate(pokemonCardIndex) {
-    return `<article onclick="openCurrentPokemonCard(${pokemonCardIndex})" class="pokemon_main_card" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">
+    return `<article onclick="openCurrentPokemonCard(${pokemonCardIndex})" class="pokemon_main_card" id="pokemon_main_card_${pokemonCardIndex}" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">
                 <h3 id="pokemon_id_${pokemonCardIndex}" class="pokemon_id"># ${currentPokemonsMainList[pokemonCardIndex].id}</h3>
                 <figure class="pokemon_img_name">
                     <img loading="lazy" class="pokemon_img_size" src="${currentPokemonsMainList[pokemonCardIndex].img_url}"
@@ -18,7 +18,11 @@ function getMainPokemonCardTemplate(pokemonCardIndex) {
 function getPokemonCardTemplate(pokemonCardIndex) {
     return `<header class="pokemon_card_header" style="background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">
                 <span class="pokemon_card_designation">
-                    <h4 id="pokemon_card_id_${pokemonCardIndex}" class="pokemon_id_card"># ${currentPokemonsMainList[pokemonCardIndex].id}</h4>
+                    <div class="close_button_position">
+                        <h4 id="pokemon_card_id_${pokemonCardIndex}" class="pokemon_id_card"># ${currentPokemonsMainList[pokemonCardIndex].id}</h4>
+                        <button onclick="closePokemonCard()" class="button close_button">X</button>
+                    </div>
+                    
                     <h2 id="pokemon_card_name_${pokemonCardIndex}" class="pokemon_name_card">${currentPokemonsMainList[pokemonCardIndex].name}</h2>
                 </span>
                 <div>
@@ -76,7 +80,7 @@ function getPokemonCardTemplate(pokemonCardIndex) {
 function getPokemonCardBaseStatsTemplate(pokemonCardIndex, baseStatIndex) {
     return `<tr>
                 <td class="base_stat_name">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[baseStatIndex].stat.name}:</td>
-                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}_0" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[baseStatIndex].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[baseStatIndex].base_stat}</div></td>
+                <td class="base_stat_value" style="border: 2px solid ${currentPokemonsMainList[pokemonCardIndex].color}"><div id="base_stat_bar_${pokemonCardIndex}_${[baseStatIndex]}" class="base_stat_bar" style="width: ${pokemonsBaseStatesList[pokemonCardIndex].base_stats[baseStatIndex].base_stat / 1.5}%; background-color: ${currentPokemonsMainList[pokemonCardIndex].color}">${pokemonsBaseStatesList[pokemonCardIndex].base_stats[baseStatIndex].base_stat}</div></td>
             </tr>`
 }
 
