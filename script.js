@@ -19,16 +19,20 @@ let contentSearchInformation = document.getElementById("search_information");
 let currentPokemonCard = 0;
 
 function init() {
-    showPokemonsList();
     initPokemonsList();
 }
 
 async function initPokemonsList() {
     showLoadingScreenFirstTime();
-    await renderPokemonsMainList(1, 21);
+    await renderPokemonsMainList(1, 4);
     currentPokemonsMainList = pokemonsMainList;
     renderPokemonCard();
     closeLoadingScreen();
+    showPokemonsList();
+}
+
+function showPokemonsList() {
+    contentPokemonList.classList.remove('pokemon_list_none');
 }
 
 async function getPokemonData(id = "") {
@@ -46,13 +50,21 @@ async function fetchPokemonData(id = "") {
     let pokemonSpeciesResponseAsJson = await speciesResponse.json();
     let evoResponse = await fetch(EVO_URL + id);
     let pokemonEvolutionResponseAsJson = await evoResponse.json();
+    createAllLists(id, pokemonResponseAsJson, pokemonSpeciesResponseAsJson, pokemonEvolutionResponseAsJson)
+}
+
+function createAllLists(id, pokemonResponseAsJson, pokemonSpeciesResponseAsJson, pokemonEvolutionResponseAsJson) {
     let pokemonObj = createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson);
     let pokemonObjBaseStates = createPokemonsBaseStatesList(pokemonResponseAsJson);
     let pokemonObjEvolution = createPokemonsEvoList(pokemonEvolutionResponseAsJson);
     pokemonsMainList[id - 1] = pokemonObj;
     pokemonsBaseStatesList[id - 1] = pokemonObjBaseStates;
     pokemonsEvoList[id - 1] = pokemonObjEvolution;
-    return pokemonObj, pokemonObjBaseStates, pokemonObjEvolution;
+    return {
+        pokemonObj,
+        pokemonObjBaseStates,
+        pokemonObjEvolution
+    };
 }
 
 function createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson) {
@@ -133,8 +145,7 @@ function checkTextColorInBaseStats(pokemonCardIndex) {
         document.getElementById(`base_stat_bar_${pokemonCardIndex}_2`),
         document.getElementById(`base_stat_bar_${pokemonCardIndex}_3`),
         document.getElementById(`base_stat_bar_${pokemonCardIndex}_4`),
-        document.getElementById(`base_stat_bar_${pokemonCardIndex}_5`)
-    ];
+        document.getElementById(`base_stat_bar_${pokemonCardIndex}_5`)];
     if (whiteAndYellowBg(pokemonCardIndex)) {
         styleGreyBars(contentBaseStateBars);
     }
@@ -224,15 +235,15 @@ function stylePokeCardAtPokeDialog(contentSecondPokemonTypeAtPokemonCard, conten
 }
 
 function showLoadingScreenFirstTime() {
-    addLoadingScreenTwoSek();
+    addLoadingScreen();
 }
 
 function showLoadingScreenAgain() {
-    addLoadingScreenTwoSek();
+    addLoadingScreen();
     addLoadingScreenAsOverlay();
 }
 
-function addLoadingScreenTwoSek() {
+function addLoadingScreen() {
     contentLoadingScreen.classList.remove('loading_screen_none');
 }
 
@@ -251,24 +262,37 @@ function addLoadingScreenAsOverlay() {
     document.body.classList.add('scroll_lock');
 }
 
-function showPokemonsList() {
-    setTimeout(() => {
-        contentPokemonList.classList.remove('pokemon_list_none');
-    }, 2000);
-}
-
 function filterAndShowPokemonCards() {
     let filterWord = contentSearchInput.value;
     if (filterWord.length >= 3) {
         currentPokemonsMainList = pokemonsMainList.filter(pokemon => pokemon.name.includes(filterWord));
-        contentLoadMoreButton.classList.add('load_button_none');
-        contentLoadLessButton.classList.add('load_button_none');
-        contentShowButton.classList.remove('load_button_none');
+        removeShowButton();
+        if (currentPokemonsMainList == 0) {
+            showSearchInformation();
+            contentShowButton.classList.add('load_button_none');
+            contentLoadMoreButton.classList.remove('load_button_none');
+        }
     } else {
-        currentPokemonsMainList = pokemonsMainList;
-        openInfoToWriteAtLeastThreeLetters();
+        showSearchInformation();
     }
     renderPokemonCard();
+}
+
+function removeShowButton() {
+    contentLoadMoreButton.classList.add('load_button_none');
+    contentLoadLessButton.classList.add('load_button_none');
+    contentShowButton.classList.remove('load_button_none');
+}
+
+function showSearchInformation() {
+    currentPokemonsMainList = pokemonsMainList;
+    openInfoToWriteAtLeastThreeLetters();
+    addSearchInformationAsOverlay();
+}
+
+function addSearchInformationAsOverlay() {
+    contentSearchInformation.classList.add('loading_screen_overlay');
+    document.body.classList.add('scroll_lock');
 }
 
 function openInfoToWriteAtLeastThreeLetters() {
@@ -277,35 +301,49 @@ function openInfoToWriteAtLeastThreeLetters() {
 
 function closeSearchInformation() {
     contentSearchInformation.classList.add("pokemon_information_none");
+    document.body.classList.remove('scroll_lock');
 }
 
 async function loadMorePokemons() {
     showLoadingScreenAgain();
-    await renderPokemonsMainList(1, 41);
+    await renderPokemonsMainList(currentPokemonsMainList.length, currentPokemonsMainList.length + 4);
     closeLoadingScreenAgain();
     renderPokemonCard();
-    toggleButtonsClass(contentLoadMoreButton, contentLoadLessButton);
+    checkIfPokemonHasThreeEvolutionSteps();
+    renderPokemonCard();
+    if (currentPokemonsMainList.length == 41) {
+        toggleButtonsClass(contentLoadMoreButton, contentLoadLessButton);
+    }
+}
+
+function checkIfPokemonHasThreeEvolutionSteps() {
+    for (let index = 0; index < currentPokemonsMainList.length; index++) {
+        if (currentPokemonsMainList[index].evolution_steps.evolution_end == undefined && (currentPokemonsMainList.length - 1) == currentPokemonsMainList[index].id || currentPokemonsMainList[index].evolution_steps.evolution_start == 'pichu' && (currentPokemonsMainList.length - 1) == currentPokemonsMainList[index].id || currentPokemonsMainList[index].evolution_steps.evolution_start == 'cleffa' && (currentPokemonsMainList.length - 1) == currentPokemonsMainList[index].id) {
+            currentPokemonsMainList.pop();
+        }
+    }
 }
 
 function showAllPokemons() {
     currentPokemonsMainList = pokemonsMainList;
     renderPokemonCard();
     contentShowButton.classList.add('load_button_none');
-    if (currentPokemonsMainList.length == 20) {
-        contentLoadMoreButton.classList.remove('load_button_none');
-        contentLoadLessButton.classList.add('load_button_none');
-    } else {
+    if (currentPokemonsMainList.length == 41) {
         contentLoadMoreButton.classList.add('load_button_none');
         contentLoadLessButton.classList.remove('load_button_none');
+    } else {
+        contentLoadMoreButton.classList.remove('load_button_none');
+        contentLoadLessButton.classList.add('load_button_none');
     }
 }
 
 function loadLessPokemons() {
-    for (let index = currentPokemonsMainList.length; index > 20; index--) {
-        currentPokemonsMainList.pop();
-    }
+    currentPokemonsMainList.length -= 4;
+    currentPokemonsMainList.pop();
     renderPokemonCard();
-    toggleButtonsClass(contentLoadLessButton, contentLoadMoreButton);
+    if (currentPokemonsMainList.length == 5) {
+        toggleButtonsClass(contentLoadLessButton, contentLoadMoreButton);
+    }
 }
 
 function toggleButtonsClass(addClass, removeClass) {
@@ -384,6 +422,7 @@ function openPokemonInformation(pokemonCardIndex, navigationCondition) {
     addEvolutionImages(pokemonCardIndex);
     notShowEvolutionSecond(pokemonCardIndex);
     checkTextColorInBaseStats(pokemonCardIndex);
+    createBaseStateTable(pokemonCardIndex);
 }
 
 function switchToPokemonCardInformation(navigationCondition, about, baseStates, evolution) {
@@ -436,5 +475,13 @@ function notShowEvolutionSecond(pokemonCardIndex) {
         let contentEvolutionSecondImg = document.getElementById(`pokemon_evolution_to_second_img_${pokemonCardIndex}`);
         contentEvolutionSecond.classList.add('pokemon_information_none');
         contentEvolutionSecondImg.classList.add('pokemon_information_none');
+    }
+}
+
+function createBaseStateTable(pokemonCardIndex) {
+    let contentTableBaseStats = document.getElementById(`table_content_${pokemonCardIndex}`);
+    contentTableBaseStats.innerHTML = "";
+    for (let baseStatIndex = 0; baseStatIndex < pokemonsBaseStatesList[pokemonCardIndex].base_stats.length; baseStatIndex++) {
+        contentTableBaseStats.innerHTML += getPokemonCardBaseStatsTemplate(pokemonCardIndex, baseStatIndex);
     }
 }
