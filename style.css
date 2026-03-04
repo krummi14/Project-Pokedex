@@ -357,6 +357,23 @@ footer {
 }
 
 @media(min-width: 320px) and (max-width: 629px) {
+    .search_information_screen {
+        padding: 80px 40px;
+    }
+
+    .search_information {
+        width: 100%;
+        height: 480px;
+    }
+
+    .search_information_text {
+        font-size: 24px;
+    }
+
+    .search_information_text_info {
+        font-size: 16px;
+    }
+
     .pokemon_list {
         padding: 80px 40px;
     }
@@ -550,6 +567,7 @@ footer {
     .pokemon_card_navigation_link {
         height: 32px;
         width: 80px;
+        color: c;
     }
 
     .pokemon_card_navigation_link:hover {

@@ -167,6 +167,34 @@ function addClassOnePokemonNavigation(navigationCondition, pokemonCardIndex) {
 function addEvolutionImages(pokemonCardIndex) {
     let contentEvolutionImages = document.getElementById(`evolution_${pokemonCardIndex}`);
     contentEvolutionImages.innerHTML = getPokemonCardEvolutionTemplate(pokemonCardIndex);
+    let contentImageEvolutionStart = document.getElementById(`pokemon_evolution_start_img_${pokemonCardIndex}`);
+    let contentImageEvolutionEnd = document.getElementById(`pokemon_evolution_to_second_img_${pokemonCardIndex}`);
+    let contentEvolutionArrow = document.getElementById(`evolution_to_${pokemonCardIndex}`);
+    let contentEvolutionArrowSec = document.getElementById(`pokemon_evolution_to_second_${pokemonCardIndex}`);
+    setImageOrHide(contentEvolutionArrow, contentImageEvolutionStart, currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_start_img);
+    setImageOrHide(contentEvolutionArrowSec, contentImageEvolutionEnd, currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_end_img);
+}
+
+function setImageOrHide(arrowElement, imgElement, url) {
+    if (!imgElement) return;
+    if (!url || url == "undefined" || url == "null") {
+        imgElement.classList.add("pokemon_information_none");
+        arrowElement.classList.add("pokemon_information_none");
+        return;
+    }
+    imgElement.src = url;
+    imgElement.onerror = () => {
+        imgElement.classList.add("pokemon_information_none");
+        arrowElement.classList.add("pokemon_information_none");
+    };
+}
+
+function removeUndefinedImage(pokemonCardIndex) {
+    let contentImageEvolutionStart = document.getElementById(`pokemon_evolution_start_img_${pokemonCardIndex}`);
+    let contentImageEvolutionEnd = document.getElementById(`pokemon_evolution_to_second_img_${pokemonCardIndex}`);
+    if (contentImageEvolutionStart.src == undefined) {
+        contentImageEvolutionStart.classList.add("pokemon_information_none");
+    }
 }
 
 function notShowEvolutionSecond(pokemonCardIndex) {

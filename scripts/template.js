@@ -86,11 +86,11 @@ function getPokemonCardBaseStatsTemplate(pokemonCardIndex, baseStatIndex) {
 
 function getPokemonCardEvolutionTemplate(pokemonCardIndex) {
     return `<div class="pokemon_evolution">
-                <img class="pokemon_img_size_card pokemon_img_size_card_respo" src="${currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_start_img}">
-                <p class="pokemon_evolution_to">>></p>
+                <img id="pokemon_evolution_start_img_${pokemonCardIndex}"   class="pokemon_img_size_card pokemon_img_size_card_respo" src="">
+                <p id="evolution_to_${pokemonCardIndex}" class="pokemon_evolution_to">>></p>
                 <img class="pokemon_img_size_card pokemon_img_size_card_respo" src="${currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_to_img}">
                 <p id="pokemon_evolution_to_second_${pokemonCardIndex}" class="pokemon_evolution_to">>></p>
-                <img id="pokemon_evolution_to_second_img_${pokemonCardIndex}" class="pokemon_img_size_card pokemon_img_none pokemon_img_size_card_respo" src="${currentPokemonsMainList[pokemonCardIndex].evolution_steps.evolution_end_img}">
+                <img id="pokemon_evolution_to_second_img_${pokemonCardIndex}" class="pokemon_img_size_card pokemon_img_none pokemon_img_size_card_respo" src="">
             </div>
             `
 }

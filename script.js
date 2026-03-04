@@ -5,6 +5,21 @@ let pokemonsMainList = [];
 let currentPokemonsMainList = [];
 let pokemonsBaseStatesList = [];
 let pokemonsEvoList = [];
+let colorPokemons = {
+    grass: "green",
+    bug: "orange",
+    fire: "red",
+    water: "blue",
+    electric: "yellow",
+    normal: "purple",
+    ground: "brown",
+    poison: "white",
+    fairy: "pink",
+    fighting: "black",
+    psychic: "burlywood",
+    rock: "grey",
+    ghost: "cadetblue"
+};
 let contentLoadingScreen = document.getElementById('loading_screen');
 let contentPokemonList = document.getElementById('pokemon_list');
 let contentPokemonCardList = document.getElementById('pokemon_card_list');
@@ -84,18 +99,8 @@ function createPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJ
 }
 
 function defineColorOfPokemonsMainList(pokemonResponseAsJson, pokemonSpeciesResponseAsJson) {
-    if (pokemonResponseAsJson.types[0].type.name == "bug") {
-        pokemonSpeciesResponseAsJson.color.name = "white";
-    }
-    if (pokemonResponseAsJson.types.length == 2 && pokemonResponseAsJson.types[0].type.name == "bug" && pokemonResponseAsJson.types[1].type.name == "poison") {
-        pokemonSpeciesResponseAsJson.color.name = "yellow";
-    }
-    if (pokemonResponseAsJson.types.length == 1 && pokemonResponseAsJson.types[0].type.name == "normal") {
-        pokemonSpeciesResponseAsJson.color.name = "purple";
-    }
-    if (pokemonResponseAsJson.types[0].type.name == "fire") {
-        pokemonSpeciesResponseAsJson.color.name = "red";
-    }
+    let type = pokemonResponseAsJson.types[0].type.name;
+    pokemonSpeciesResponseAsJson.color.name = colorPokemons[type];
 }
 
 function createPokemonsBaseStatesList(pokemonResponseAsJson) {
@@ -107,17 +112,19 @@ function createPokemonsBaseStatesList(pokemonResponseAsJson) {
 }
 
 function createPokemonsEvoList(pokemonEvolutionResponseAsJson) {
-    let second = undefined;
-    if (pokemonEvolutionResponseAsJson.chain.evolves_to[0].evolves_to.length > 0) {
-        second = pokemonEvolutionResponseAsJson.chain.evolves_to[0].evolves_to[0].species.name;
-    } else {
-        second;
+    let firstEvo = undefined;
+    let secondEvo = undefined;
+    if (pokemonEvolutionResponseAsJson.chain.evolves_to && pokemonEvolutionResponseAsJson.chain.evolves_to.length > 0) {
+        firstEvo = pokemonEvolutionResponseAsJson.chain.evolves_to[0].species.name;
+        if (pokemonEvolutionResponseAsJson.chain.evolves_to[0].evolves_to && pokemonEvolutionResponseAsJson.chain.evolves_to[0].evolves_to.length > 0) {
+            secondEvo = pokemonEvolutionResponseAsJson.chain.evolves_to[0].evolves_to[0].species.name;
+        }
     }
     return {
         evolution_start: pokemonEvolutionResponseAsJson.chain.species.name,
-        evolution_to: pokemonEvolutionResponseAsJson.chain.evolves_to[0].species.name,
-        evolution_end: second
-    }
+        evolution_to: firstEvo,
+        evolution_end: secondEvo
+    };
 }
 
 async function renderPokemonsMainList(start, end) {
@@ -272,9 +279,9 @@ async function loadMorePokemons() {
     checkIfPokemonHasThreeEvolutionSteps();
     renderPokemonCard();
     contentFooter.scrollIntoView();
-    if (currentPokemonsMainList.length == 40) {
-        toggleButtonsClass(contentLoadMoreButton, contentLoadLessButton);
-    }
+    //if (currentPokemonsMainList.length == 40) {
+    //    toggleButtonsClass(contentLoadMoreButton, contentLoadLessButton);
+    //}
 }
 
 function checkIfPokemonHasThreeEvolutionSteps() {
